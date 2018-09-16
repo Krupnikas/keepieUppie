@@ -1,0 +1,623 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A5386EE32136A35200C86A1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE22136A35200C86A1D /* AppDelegate.swift */; };
+		A5386EE52136A35200C86A1D /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A5386EE42136A35200C86A1D /* GameScene.sks */; };
+		A5386EE72136A35200C86A1D /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = A5386EE62136A35200C86A1D /* Actions.sks */; };
+		A5386EE92136A35200C86A1D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE82136A35200C86A1D /* GameScene.swift */; };
+		A5386EEB2136A35200C86A1D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EEA2136A35200C86A1D /* GameViewController.swift */; };
+		A5386EEE2136A35200C86A1D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5386EEC2136A35200C86A1D /* Main.storyboard */; };
+		A5386EF02136A35300C86A1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5386EEF2136A35300C86A1D /* Assets.xcassets */; };
+		A5386EF32136A35300C86A1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5386EF12136A35300C86A1D /* LaunchScreen.storyboard */; };
+		A5386EFE2136A35300C86A1D /* Keepie_uppieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EFD2136A35300C86A1D /* Keepie_uppieTests.swift */; };
+		A5386F092136A35300C86A1D /* Keepie_uppieUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */; };
+		A5BEFB7D2136DB5400BB51C7 /* shoes.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB7C2136DB5400BB51C7 /* shoes.png */; };
+		A5BEFB7F2136EAEB00BB51C7 /* background1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */; };
+		A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB802136ED9D00BB51C7 /* background.jpg */; };
+		A5BEFB832136F15800BB51C7 /* ball1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB822136F15700BB51C7 /* ball1.png */; };
+		A5FA9F5C2136B0CE00B0D2CC /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = A5FA9F5B2136B0CE00B0D2CC /* Ball.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A5386EFA2136A35300C86A1D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5386ED72136A35200C86A1D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5386EDE2136A35200C86A1D;
+			remoteInfo = "Keepie uppie";
+		};
+		A5386F052136A35300C86A1D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5386ED72136A35200C86A1D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5386EDE2136A35200C86A1D;
+			remoteInfo = "Keepie uppie";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A5386EDF2136A35200C86A1D /* Keepie uppie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Keepie uppie.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5386EE22136A35200C86A1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A5386EE42136A35200C86A1D /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		A5386EE62136A35200C86A1D /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		A5386EE82136A35200C86A1D /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		A5386EEA2136A35200C86A1D /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		A5386EED2136A35200C86A1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A5386EEF2136A35300C86A1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A5386EF22136A35300C86A1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A5386EF42136A35300C86A1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5386EF92136A35300C86A1D /* Keepie uppieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Keepie uppieTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5386EFD2136A35300C86A1D /* Keepie_uppieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keepie_uppieTests.swift; sourceTree = "<group>"; };
+		A5386EFF2136A35300C86A1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5386F042136A35300C86A1D /* Keepie uppieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Keepie uppieUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keepie_uppieUITests.swift; sourceTree = "<group>"; };
+		A5386F0A2136A35300C86A1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5BEFB7C2136DB5400BB51C7 /* shoes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoes.png; sourceTree = "<group>"; };
+		A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background1.jpg; sourceTree = "<group>"; };
+		A5BEFB802136ED9D00BB51C7 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		A5BEFB822136F15700BB51C7 /* ball1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball1.png; sourceTree = "<group>"; };
+		A5FA9F5B2136B0CE00B0D2CC /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A5386EDC2136A35200C86A1D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5386EF62136A35300C86A1D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5386F012136A35300C86A1D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A5386ED62136A35200C86A1D = {
+			isa = PBXGroup;
+			children = (
+				A5386EE12136A35200C86A1D /* Keepie uppie */,
+				A5386EFC2136A35300C86A1D /* Keepie uppieTests */,
+				A5386F072136A35300C86A1D /* Keepie uppieUITests */,
+				A5386EE02136A35200C86A1D /* Products */,
+				A5FA9F5B2136B0CE00B0D2CC /* Ball.png */,
+				A5BEFB7C2136DB5400BB51C7 /* shoes.png */,
+				A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */,
+				A5BEFB822136F15700BB51C7 /* ball1.png */,
+				A5BEFB802136ED9D00BB51C7 /* background.jpg */,
+			);
+			sourceTree = "<group>";
+		};
+		A5386EE02136A35200C86A1D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5386EDF2136A35200C86A1D /* Keepie uppie.app */,
+				A5386EF92136A35300C86A1D /* Keepie uppieTests.xctest */,
+				A5386F042136A35300C86A1D /* Keepie uppieUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A5386EE12136A35200C86A1D /* Keepie uppie */ = {
+			isa = PBXGroup;
+			children = (
+				A5386EE22136A35200C86A1D /* AppDelegate.swift */,
+				A5386EE42136A35200C86A1D /* GameScene.sks */,
+				A5386EE62136A35200C86A1D /* Actions.sks */,
+				A5386EE82136A35200C86A1D /* GameScene.swift */,
+				A5386EEA2136A35200C86A1D /* GameViewController.swift */,
+				A5386EEC2136A35200C86A1D /* Main.storyboard */,
+				A5386EEF2136A35300C86A1D /* Assets.xcassets */,
+				A5386EF12136A35300C86A1D /* LaunchScreen.storyboard */,
+				A5386EF42136A35300C86A1D /* Info.plist */,
+			);
+			path = "Keepie uppie";
+			sourceTree = "<group>";
+		};
+		A5386EFC2136A35300C86A1D /* Keepie uppieTests */ = {
+			isa = PBXGroup;
+			children = (
+				A5386EFD2136A35300C86A1D /* Keepie_uppieTests.swift */,
+				A5386EFF2136A35300C86A1D /* Info.plist */,
+			);
+			path = "Keepie uppieTests";
+			sourceTree = "<group>";
+		};
+		A5386F072136A35300C86A1D /* Keepie uppieUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */,
+				A5386F0A2136A35300C86A1D /* Info.plist */,
+			);
+			path = "Keepie uppieUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A5386EDE2136A35200C86A1D /* Keepie uppie */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A5386F0D2136A35300C86A1D /* Build configuration list for PBXNativeTarget "Keepie uppie" */;
+			buildPhases = (
+				A5386EDB2136A35200C86A1D /* Sources */,
+				A5386EDC2136A35200C86A1D /* Frameworks */,
+				A5386EDD2136A35200C86A1D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Keepie uppie";
+			productName = "Keepie uppie";
+			productReference = A5386EDF2136A35200C86A1D /* Keepie uppie.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A5386EF82136A35300C86A1D /* Keepie uppieTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A5386F102136A35300C86A1D /* Build configuration list for PBXNativeTarget "Keepie uppieTests" */;
+			buildPhases = (
+				A5386EF52136A35300C86A1D /* Sources */,
+				A5386EF62136A35300C86A1D /* Frameworks */,
+				A5386EF72136A35300C86A1D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A5386EFB2136A35300C86A1D /* PBXTargetDependency */,
+			);
+			name = "Keepie uppieTests";
+			productName = "Keepie uppieTests";
+			productReference = A5386EF92136A35300C86A1D /* Keepie uppieTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A5386F032136A35300C86A1D /* Keepie uppieUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A5386F132136A35300C86A1D /* Build configuration list for PBXNativeTarget "Keepie uppieUITests" */;
+			buildPhases = (
+				A5386F002136A35300C86A1D /* Sources */,
+				A5386F012136A35300C86A1D /* Frameworks */,
+				A5386F022136A35300C86A1D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A5386F062136A35300C86A1D /* PBXTargetDependency */,
+			);
+			name = "Keepie uppieUITests";
+			productName = "Keepie uppieUITests";
+			productReference = A5386F042136A35300C86A1D /* Keepie uppieUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A5386ED72136A35200C86A1D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = "Сергей Крупник";
+				TargetAttributes = {
+					A5386EDE2136A35200C86A1D = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					A5386EF82136A35300C86A1D = {
+						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = A5386EDE2136A35200C86A1D;
+					};
+					A5386F032136A35300C86A1D = {
+						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = A5386EDE2136A35200C86A1D;
+					};
+				};
+			};
+			buildConfigurationList = A5386EDA2136A35200C86A1D /* Build configuration list for PBXProject "Keepie uppie" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A5386ED62136A35200C86A1D;
+			productRefGroup = A5386EE02136A35200C86A1D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A5386EDE2136A35200C86A1D /* Keepie uppie */,
+				A5386EF82136A35300C86A1D /* Keepie uppieTests */,
+				A5386F032136A35300C86A1D /* Keepie uppieUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A5386EDD2136A35200C86A1D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5BEFB7F2136EAEB00BB51C7 /* background1.jpg in Resources */,
+				A5386EEE2136A35200C86A1D /* Main.storyboard in Resources */,
+				A5386EE52136A35200C86A1D /* GameScene.sks in Resources */,
+				A5386EF02136A35300C86A1D /* Assets.xcassets in Resources */,
+				A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */,
+				A5FA9F5C2136B0CE00B0D2CC /* Ball.png in Resources */,
+				A5BEFB832136F15800BB51C7 /* ball1.png in Resources */,
+				A5BEFB7D2136DB5400BB51C7 /* shoes.png in Resources */,
+				A5386EF32136A35300C86A1D /* LaunchScreen.storyboard in Resources */,
+				A5386EE72136A35200C86A1D /* Actions.sks in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5386EF72136A35300C86A1D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5386F022136A35300C86A1D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A5386EDB2136A35200C86A1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5386EE92136A35200C86A1D /* GameScene.swift in Sources */,
+				A5386EEB2136A35200C86A1D /* GameViewController.swift in Sources */,
+				A5386EE32136A35200C86A1D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5386EF52136A35300C86A1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5386EFE2136A35300C86A1D /* Keepie_uppieTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5386F002136A35300C86A1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5386F092136A35300C86A1D /* Keepie_uppieUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A5386EFB2136A35300C86A1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A5386EDE2136A35200C86A1D /* Keepie uppie */;
+			targetProxy = A5386EFA2136A35300C86A1D /* PBXContainerItemProxy */;
+		};
+		A5386F062136A35300C86A1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A5386EDE2136A35200C86A1D /* Keepie uppie */;
+			targetProxy = A5386F052136A35300C86A1D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A5386EEC2136A35200C86A1D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A5386EED2136A35200C86A1D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A5386EF12136A35300C86A1D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A5386EF22136A35300C86A1D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A5386F0B2136A35300C86A1D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A5386F0C2136A35300C86A1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A5386F0E2136A35300C86A1D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				INFOPLIST_FILE = "Keepie uppie/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppie";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A5386F0F2136A35300C86A1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				INFOPLIST_FILE = "Keepie uppie/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppie";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A5386F112136A35300C86A1D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				INFOPLIST_FILE = "Keepie uppieTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppieTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Keepie uppie.app/Keepie uppie";
+			};
+			name = Debug;
+		};
+		A5386F122136A35300C86A1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				INFOPLIST_FILE = "Keepie uppieTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppieTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Keepie uppie.app/Keepie uppie";
+			};
+			name = Release;
+		};
+		A5386F142136A35300C86A1D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				INFOPLIST_FILE = "Keepie uppieUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppieUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Keepie uppie";
+			};
+			name = Debug;
+		};
+		A5386F152136A35300C86A1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				INFOPLIST_FILE = "Keepie uppieUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppieUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Keepie uppie";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A5386EDA2136A35200C86A1D /* Build configuration list for PBXProject "Keepie uppie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5386F0B2136A35300C86A1D /* Debug */,
+				A5386F0C2136A35300C86A1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A5386F0D2136A35300C86A1D /* Build configuration list for PBXNativeTarget "Keepie uppie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5386F0E2136A35300C86A1D /* Debug */,
+				A5386F0F2136A35300C86A1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A5386F102136A35300C86A1D /* Build configuration list for PBXNativeTarget "Keepie uppieTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5386F112136A35300C86A1D /* Debug */,
+				A5386F122136A35300C86A1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A5386F132136A35300C86A1D /* Build configuration list for PBXNativeTarget "Keepie uppieUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5386F142136A35300C86A1D /* Debug */,
+				A5386F152136A35300C86A1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A5386ED72136A35200C86A1D /* Project object */;
+}
