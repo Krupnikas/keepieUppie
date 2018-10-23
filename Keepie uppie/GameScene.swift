@@ -14,7 +14,13 @@ class GameScene: SKScene {
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
-    private var foot : SKSpriteNode?
+    private var leg : SKSpriteNode?
+    private var targetPos : CGPoint?
+    
+    private var defautTargetPos : CGPoint?
+    
+    private var minX : CGFloat?
+    private var maxY : CGFloat?
     
     var background = SKSpriteNode(imageNamed: "background.jpg")
     
@@ -23,37 +29,100 @@ class GameScene: SKScene {
         background.setScale(self.size.height / background.size.height)
         background.zPosition = -1
         self.addChild(background)
+        
+        let player = SKSpriteNode(imageNamed: "player")
+        player.setScale(2)
+//        player.physicsBody = SKPhysicsBody(texture: player.texture!,
+//                                           size: player.size)
+        player.position = CGPoint(x: -3 * self.size.width / 8, y: 0)
+        player.zPosition = 3
+//        player.physicsBody?.isDynamic=false
+        self.addChild(player)
+        
+        self.minX = player.position.x
+        self.maxY = 0
+        self.defautTargetPos = CGPoint(x: self.size.width / 8,
+                                       y: -3 * self.size.height/8)
+        
+        targetPos = self.defautTargetPos
     
         createLeg()
-        createBall(atPoint: CGPoint(x: -self.size.width / 8 ,
-                                    y:  self.size.width / 3 ))
+        run(SKAction.repeatForever(SKAction.sequence([SKAction.run {
+            self.createBall(atPoint: CGPoint(x:  self.size.width / 8 ,
+                                        y:  self.size.width / 3 ))
+            }, SKAction.wait(forDuration: 10)])))
+        
         
 //        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+//        self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
     }
     
     func createLeg() {
         let w = self.size.width
         
-//        let hip  = SKShapeNode.init(rectOf: CGSize.init(width: w / 10, height: w), cornerRadius: w * 0.3)
-//        hip.position = CGPoint(x: w / 3, y: w)
-//        hip.fillColor = SKColor.orange
-//        self.addChild(hip)
-//
-//        let shin = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-//        shin.fillColor = SKColor.orange
-//        self.addChild(shin)
+        let leg = SKNode()
+        leg.name = "leg"
+        self.addChild(leg)
+    
         
-        self.foot = SKSpriteNode(imageNamed: "shoes")
-        self.foot?.name = "foot"
-        self.foot?.physicsBody = SKPhysicsBody(texture: (self.foot?.texture)!,
-                                               size: (self.foot?.size)!)
-        self.foot?.position = CGPoint(x: -w / 8, y: -w / 2)
-        self.foot?.zRotation = -0.45
-        self.foot?.physicsBody?.allowsRotation = false
-        self.foot?.physicsBody?.affectedByGravity = false
-        self.foot?.physicsBody?.linearDamping = 10
-        self.addChild(self.foot!)
+        var hip  : SKSpriteNode
+        var shin : SKSpriteNode
+        var foot : SKSpriteNode
+        
+        hip  = SKSpriteNode(imageNamed: "hip")
+        hip.position = CGPoint(x: -3 * w / 8, y: -hip.size.height/2)
+        hip.name = "hip"
+        hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
+        hip.physicsBody?.linearDamping = 10
+        hip.physicsBody?.affectedByGravity=false
+        leg.addChild(hip)
+        
+        let ass = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
+                                          bodyB: self.physicsBody!,
+                                          anchor: CGPoint(x: hip.position.x,
+                                                          y: hip.position.y + 140))
+        self.physicsWorld.add(ass)
+
+        shin  = SKSpriteNode(imageNamed: "shin")
+        
+        let offset = CGFloat(70.0)
+        shin.name = "shin"
+        shin.position = CGPoint(x: hip.position.x + 10,
+                                y: hip.position.y + offset - hip.size.height)
+        shin.setScale(0.9)
+        shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
+        shin.physicsBody?.linearDamping = 10
+        shin.physicsBody?.affectedByGravity=false
+        leg.addChild(shin)
+        
+        let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
+                                           bodyB:  shin.physicsBody!,
+                                           anchor: CGPoint(x: shin.position.x, y: shin.position.y + 140))
+        
+        self.physicsWorld.add(knee)
+        
+        foot = SKSpriteNode(imageNamed: "shoesR")
+        foot.name = "foot"
+        foot.position = CGPoint(x: shin.position.x + 50,
+                                y: shin.position.y - shin.size.height / 2 + 40)
+        foot.zPosition = 2
+        foot.zRotation = -0.45
+
+        foot.physicsBody = SKPhysicsBody(texture: foot.texture!,
+                                            size: foot.size)
+
+        foot.physicsBody?.allowsRotation = false
+        foot.physicsBody?.affectedByGravity = false
+        foot.physicsBody?.linearDamping = 10
+        leg.addChild(foot)
+        
+        let ankle = SKPhysicsJointPin.joint(withBodyA: shin.physicsBody!,
+                                            bodyB: foot.physicsBody!,
+                                            anchor: foot.position)
+        self.physicsWorld.add(ankle)
+        
+        hip.zRotation = 2
     }
     
     func createBall(atPoint pos : CGPoint) {
@@ -61,66 +130,50 @@ class GameScene: SKScene {
         ball.position = pos
         ball.setScale((self.size.width / 8) / ball.size.width)
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2)
-        ball.physicsBody?.restitution = 0.9
-        ball.physicsBody?.linearDamping = 0.5
+        ball.physicsBody?.restitution = 1.1
+        ball.physicsBody?.linearDamping = 0.3
+        ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
         self.addChild(ball)
-    }
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let label = self.label {
             label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
         }
-        
-        for t in touches {
-            self.touchDown(atPoint: t.location(in: self))
-            self.foot?.physicsBody?.applyForce(CGVector(dx: 100 * (t.location(in: self).x - (foot?.position.x)!),
-                                                        dy: 100 * (t.location(in: self).y - (foot?.position.y)!)))
-        }
+        let t = touches.first!.location(in: self)
+        targetPos = CGPoint(x: max(self.minX!, t.x - 100), y: min(self.maxY!, t.y + 150))
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            self.touchMoved(toPoint: t.location(in: self))
-            self.foot?.physicsBody?.applyForce(CGVector(dx: 100 * (t.location(in: self).x - (foot?.position.x)!),
-                                                        dy: 100 * (t.location(in: self).y - (foot?.position.y)!)))
-        }
+        let t = touches.first!.location(in: self)
+        targetPos = CGPoint(x: max(self.minX!, t.x - 100), y: min(self.maxY!, t.y + 150))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        targetPos = self.defautTargetPos
     }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        self.foot?.zRotation = (self.foot?.position.x)! / self.size.width - 0.2
+        let leg = self.childNode(withName: "leg")!
+//        print(leg.position)
+        let foot = leg.childNode(withName: "foot")
+        foot?.zRotation = pow(3 * (foot?.position.x)! / self.size.width, 3) + 0.3
+        foot?.physicsBody?.applyForce(CGVector(dx: 100 * (targetPos!.x - (foot?.position.x)!),
+                                               dy: 100 * (targetPos!.y - (foot?.position.y)!)))
+//        foot?.physicsBody?.applyForce(CGVector(dx: 10000, dy: 0))
+        
+        
+        let hip  = leg.childNode(withName: "hip")
+        let shin = leg.childNode(withName: "shin")
+        
+        
+        
+//        print(hip.zRotation, shin.zRotation)
+        if ((hip?.zRotation)! < (shin?.zRotation)! + 0.2 )  {
+            shin?.physicsBody?.applyAngularImpulse(10 * ((hip?.zRotation)! - (shin?.zRotation)! - 0.2))
+        }
+        
+        self.leg?.zRotation += 0.1
     }
 }
