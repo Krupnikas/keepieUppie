@@ -15,6 +15,7 @@ class GameScene: SKScene {
     private var spinnyNode : SKShapeNode?
     
     private var leg : SKSpriteNode?
+    private var targetPos : CGPoint?
     
     var background = SKSpriteNode(imageNamed: "background.jpg")
     
@@ -23,13 +24,19 @@ class GameScene: SKScene {
         background.setScale(self.size.height / background.size.height)
         background.zPosition = -1
         self.addChild(background)
+        
+        targetPos = CGPoint(x: self.size.width / 3,
+                            y: -self.size.height/4)
     
         createLeg()
-        createBall(atPoint: CGPoint(x:  self.size.width / 8 ,
-                                    y:  self.size.width / 3 ))
+        run(SKAction.repeatForever(SKAction.sequence([SKAction.run {
+            self.createBall(atPoint: CGPoint(x:  self.size.width / 8 ,
+                                        y:  self.size.width / 3 ))
+            }, SKAction.wait(forDuration: 10)])))
+        
         
 //        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        self.view?.showsPhysics = true
+//        self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
     }
     
@@ -46,9 +53,11 @@ class GameScene: SKScene {
         var foot : SKSpriteNode
         
         hip  = SKSpriteNode(imageNamed: "hip")
-        hip.position = CGPoint(x: -w / 4, y: 0)
+        hip.position = CGPoint(x: -3 * w / 8, y: 0)
         hip.name = "hip"
         hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
+        hip.physicsBody?.linearDamping = 10
+        hip.physicsBody?.affectedByGravity=false
         leg.addChild(hip)
         
         let ass = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
@@ -65,6 +74,8 @@ class GameScene: SKScene {
                                 y: hip.position.y + offset - hip.size.height)
         shin.setScale(0.9)
         shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
+        shin.physicsBody?.linearDamping = 10
+        shin.physicsBody?.affectedByGravity=false
         leg.addChild(shin)
         
         let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
@@ -111,21 +122,11 @@ class GameScene: SKScene {
         if let label = self.label {
             label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
         }
-        for t in touches {
-            let leg = self.childNode(withName: "leg")
-            let foot = leg?.childNode(withName: "foot")
-            self.leg?.childNode(withName: "foot")?.physicsBody?.applyForce(CGVector(dx: 100 * (t.location(in: self).x - (foot?.position.x)!),
-                                                  dy: 100 * (t.location(in: self).y - (foot?.position.y)!)))
-        }
+        targetPos = touches.first!.location(in: self)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            let leg = self.childNode(withName: "leg")
-            let foot = leg?.childNode(withName: "foot")
-            foot?.physicsBody?.applyForce(CGVector(dx: 100 * (t.location(in: self).x - (foot?.position.x)!),
-                                                   dy: 100 * (t.location(in: self).y - (foot?.position.y)!)))
-        }
+        targetPos = touches.first!.location(in: self)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -133,16 +134,20 @@ class GameScene: SKScene {
         let leg = self.childNode(withName: "leg")!
 //        print(leg.position)
         let foot = leg.childNode(withName: "foot")
-        foot?.zRotation = (foot?.position.x)! / self.size.width + 0.2
+        foot?.zRotation = pow(3 * (foot?.position.x)! / self.size.width, 3) + 0.3
+        foot?.physicsBody?.applyForce(CGVector(dx: 100 * (targetPos!.x - (foot?.position.x)!),
+                                               dy: 100 * (targetPos!.y - (foot?.position.y)!)))
 //        foot?.physicsBody?.applyForce(CGVector(dx: 10000, dy: 0))
         
         
         let hip  = leg.childNode(withName: "hip")
         let shin = leg.childNode(withName: "shin")
         
+        
+        
 //        print(hip.zRotation, shin.zRotation)
-        if ((hip?.zRotation)! < (shin?.zRotation)! )  {
-            shin?.physicsBody?.applyAngularImpulse(10 * ((hip?.zRotation)! - (shin?.zRotation)!))
+        if ((hip?.zRotation)! < (shin?.zRotation)! + 0.2 )  {
+            shin?.physicsBody?.applyAngularImpulse(10 * ((hip?.zRotation)! - (shin?.zRotation)! - 0.2))
         }
         
         self.leg?.zRotation += 0.1
