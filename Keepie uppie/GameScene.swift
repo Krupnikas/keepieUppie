@@ -25,6 +25,14 @@ class GameScene: SKScene {
         background.zPosition = -1
         self.addChild(background)
         
+        let player = SKSpriteNode(imageNamed: "player")
+        player.setScale(2)
+//        player.physicsBody = SKPhysicsBody(texture: player.texture!,
+//                                           size: player.size)
+        player.position = CGPoint(x: -3 * self.size.width / 8, y: 0)
+//        player.physicsBody?.isDynamic=false
+        self.addChild(player)
+        
         targetPos = CGPoint(x: self.size.width / 3,
                             y: -self.size.height/4)
     
@@ -53,7 +61,7 @@ class GameScene: SKScene {
         var foot : SKSpriteNode
         
         hip  = SKSpriteNode(imageNamed: "hip")
-        hip.position = CGPoint(x: -3 * w / 8, y: 0)
+        hip.position = CGPoint(x: -3 * w / 8, y: -hip.size.height/2)
         hip.name = "hip"
         hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
         hip.physicsBody?.linearDamping = 10

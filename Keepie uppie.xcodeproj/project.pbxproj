@@ -20,6 +20,7 @@
 		A54FC218217DDDD600431EF2 /* shin.png in Resources */ = {isa = PBXBuildFile; fileRef = A54FC216217DDDD600431EF2 /* shin.png */; };
 		A54FC21A217DE33E00431EF2 /* hip.png in Resources */ = {isa = PBXBuildFile; fileRef = A54FC219217DE33E00431EF2 /* hip.png */; };
 		A54FC21C217E10B300431EF2 /* shoesR.png in Resources */ = {isa = PBXBuildFile; fileRef = A54FC21B217E10B200431EF2 /* shoesR.png */; };
+		A58FC3A8217F3B9A00C18765 /* player.png in Resources */ = {isa = PBXBuildFile; fileRef = A58FC3A7217F3B9A00C18765 /* player.png */; };
 		A5BEFB7D2136DB5400BB51C7 /* shoes.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB7C2136DB5400BB51C7 /* shoes.png */; };
 		A5BEFB7F2136EAEB00BB51C7 /* background1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */; };
 		A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB802136ED9D00BB51C7 /* background.jpg */; };
@@ -64,6 +65,7 @@
 		A54FC216217DDDD600431EF2 /* shin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shin.png; sourceTree = "<group>"; };
 		A54FC219217DE33E00431EF2 /* hip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hip.png; path = ../keepieUppie/images/hip.png; sourceTree = "<group>"; };
 		A54FC21B217E10B200431EF2 /* shoesR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoesR.png; sourceTree = "<group>"; };
+		A58FC3A7217F3B9A00C18765 /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = player.png; path = images/player.png; sourceTree = "<group>"; };
 		A5BEFB7C2136DB5400BB51C7 /* shoes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoes.png; sourceTree = "<group>"; };
 		A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background1.jpg; sourceTree = "<group>"; };
 		A5BEFB802136ED9D00BB51C7 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				A5386EFC2136A35300C86A1D /* Keepie uppieTests */,
 				A5386F072136A35300C86A1D /* Keepie uppieUITests */,
 				A5386EE02136A35200C86A1D /* Products */,
+				A58FC3A7217F3B9A00C18765 /* player.png */,
 				A54FC21B217E10B200431EF2 /* shoesR.png */,
 				A54FC219217DE33E00431EF2 /* hip.png */,
 				A54FC216217DDDD600431EF2 /* shin.png */,
@@ -267,6 +270,7 @@
 				A5386EE52136A35200C86A1D /* GameScene.sks in Resources */,
 				A54FC21A217DE33E00431EF2 /* hip.png in Resources */,
 				A5386EF02136A35300C86A1D /* Assets.xcassets in Resources */,
+				A58FC3A8217F3B9A00C18765 /* player.png in Resources */,
 				A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */,
 				A54FC218217DDDD600431EF2 /* shin.png in Resources */,
 				A5FA9F5C2136B0CE00B0D2CC /* Ball.png in Resources */,
