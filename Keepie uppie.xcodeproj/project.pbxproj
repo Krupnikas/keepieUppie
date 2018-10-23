@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A5386EE32136A35200C86A1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE22136A35200C86A1D /* AppDelegate.swift */; };
-		A5386EE52136A35200C86A1D /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A5386EE42136A35200C86A1D /* GameScene.sks */; };
-		A5386EE72136A35200C86A1D /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = A5386EE62136A35200C86A1D /* Actions.sks */; };
 		A5386EE92136A35200C86A1D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE82136A35200C86A1D /* GameScene.swift */; };
 		A5386EEB2136A35200C86A1D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EEA2136A35200C86A1D /* GameViewController.swift */; };
 		A5386EEE2136A35200C86A1D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5386EEC2136A35200C86A1D /* Main.storyboard */; };
@@ -22,6 +20,11 @@
 		A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB802136ED9D00BB51C7 /* background.jpg */; };
 		A5BEFB832136F15800BB51C7 /* ball1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB822136F15700BB51C7 /* ball1.png */; };
 		A5FA9F5C2136B0CE00B0D2CC /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = A5FA9F5B2136B0CE00B0D2CC /* Ball.png */; };
+		D4165009217F2AFD00F93ED6 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165004217F2AFD00F93ED6 /* MainMenuScene.swift */; };
+		D416500A217F2AFD00F93ED6 /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165005217F2AFD00F93ED6 /* SceneManager.swift */; };
+		D416500B217F2AFD00F93ED6 /* WorkshopScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165006217F2AFD00F93ED6 /* WorkshopScene.swift */; };
+		D416500C217F2AFD00F93ED6 /* SgButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165007217F2AFD00F93ED6 /* SgButton.swift */; };
+		D416500F217F2B9800F93ED6 /* Extern.swift in Sources */ = {isa = PBXBuildFile; fileRef = D416500E217F2B9800F93ED6 /* Extern.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +47,6 @@
 /* Begin PBXFileReference section */
 		A5386EDF2136A35200C86A1D /* Keepie uppie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Keepie uppie.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5386EE22136A35200C86A1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A5386EE42136A35200C86A1D /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		A5386EE62136A35200C86A1D /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		A5386EE82136A35200C86A1D /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A5386EEA2136A35200C86A1D /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		A5386EED2136A35200C86A1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -63,6 +64,11 @@
 		A5BEFB802136ED9D00BB51C7 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		A5BEFB822136F15700BB51C7 /* ball1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball1.png; sourceTree = "<group>"; };
 		A5FA9F5B2136B0CE00B0D2CC /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball.png; sourceTree = "<group>"; };
+		D4165004217F2AFD00F93ED6 /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
+		D4165005217F2AFD00F93ED6 /* SceneManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
+		D4165006217F2AFD00F93ED6 /* WorkshopScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkshopScene.swift; sourceTree = "<group>"; };
+		D4165007217F2AFD00F93ED6 /* SgButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SgButton.swift; sourceTree = "<group>"; };
+		D416500E217F2B9800F93ED6 /* Extern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extern.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,15 +124,15 @@
 		A5386EE12136A35200C86A1D /* Keepie uppie */ = {
 			isa = PBXGroup;
 			children = (
+				D4165003217F2AFD00F93ED6 /* Scene */,
 				A5386EE22136A35200C86A1D /* AppDelegate.swift */,
-				A5386EE42136A35200C86A1D /* GameScene.sks */,
-				A5386EE62136A35200C86A1D /* Actions.sks */,
 				A5386EE82136A35200C86A1D /* GameScene.swift */,
 				A5386EEA2136A35200C86A1D /* GameViewController.swift */,
 				A5386EEC2136A35200C86A1D /* Main.storyboard */,
 				A5386EEF2136A35300C86A1D /* Assets.xcassets */,
 				A5386EF12136A35300C86A1D /* LaunchScreen.storyboard */,
 				A5386EF42136A35300C86A1D /* Info.plist */,
+				D416500E217F2B9800F93ED6 /* Extern.swift */,
 			);
 			path = "Keepie uppie";
 			sourceTree = "<group>";
@@ -147,6 +153,17 @@
 				A5386F0A2136A35300C86A1D /* Info.plist */,
 			);
 			path = "Keepie uppieUITests";
+			sourceTree = "<group>";
+		};
+		D4165003217F2AFD00F93ED6 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				D4165004217F2AFD00F93ED6 /* MainMenuScene.swift */,
+				D4165005217F2AFD00F93ED6 /* SceneManager.swift */,
+				D4165006217F2AFD00F93ED6 /* WorkshopScene.swift */,
+				D4165007217F2AFD00F93ED6 /* SgButton.swift */,
+			);
+			path = Scene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,14 +272,12 @@
 			files = (
 				A5BEFB7F2136EAEB00BB51C7 /* background1.jpg in Resources */,
 				A5386EEE2136A35200C86A1D /* Main.storyboard in Resources */,
-				A5386EE52136A35200C86A1D /* GameScene.sks in Resources */,
 				A5386EF02136A35300C86A1D /* Assets.xcassets in Resources */,
 				A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */,
 				A5FA9F5C2136B0CE00B0D2CC /* Ball.png in Resources */,
 				A5BEFB832136F15800BB51C7 /* ball1.png in Resources */,
 				A5BEFB7D2136DB5400BB51C7 /* shoes.png in Resources */,
 				A5386EF32136A35300C86A1D /* LaunchScreen.storyboard in Resources */,
-				A5386EE72136A35200C86A1D /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,9 +302,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4165009217F2AFD00F93ED6 /* MainMenuScene.swift in Sources */,
 				A5386EE92136A35200C86A1D /* GameScene.swift in Sources */,
 				A5386EEB2136A35200C86A1D /* GameViewController.swift in Sources */,
+				D416500B217F2AFD00F93ED6 /* WorkshopScene.swift in Sources */,
+				D416500A217F2AFD00F93ED6 /* SceneManager.swift in Sources */,
+				D416500F217F2B9800F93ED6 /* Extern.swift in Sources */,
 				A5386EE32136A35200C86A1D /* AppDelegate.swift in Sources */,
+				D416500C217F2AFD00F93ED6 /* SgButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,14 +483,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				DEVELOPMENT_TEAM = C97S8YETBG;
 				INFOPLIST_FILE = "Keepie uppie/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppie";
+				PRODUCT_BUNDLE_IDENTIFIER = "deserg.Keepie-uppie";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -482,14 +502,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
+				DEVELOPMENT_TEAM = C97S8YETBG;
 				INFOPLIST_FILE = "Keepie uppie/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppie";
+				PRODUCT_BUNDLE_IDENTIFIER = "deserg.Keepie-uppie";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
