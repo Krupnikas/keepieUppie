@@ -103,6 +103,7 @@ class GameScene: SKScene {
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2)
         ball.physicsBody?.restitution = 1.1
         ball.physicsBody?.linearDamping = 0.3
+        ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
         self.addChild(ball)
     }
     
@@ -124,7 +125,6 @@ class GameScene: SKScene {
             let foot = leg?.childNode(withName: "foot")
             foot?.physicsBody?.applyForce(CGVector(dx: 100 * (t.location(in: self).x - (foot?.position.x)!),
                                                    dy: 100 * (t.location(in: self).y - (foot?.position.y)!)))
-            print("Force applied")
         }
     }
     
