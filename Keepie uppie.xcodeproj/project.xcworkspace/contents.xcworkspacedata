@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Keepie uppie.xcodeproj">
+      location = "group:hip.png">
+   </FileRef>
+   <FileRef
+      location = "group:../../keepieUppie/images/hip.png">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>

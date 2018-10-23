@@ -17,6 +17,14 @@
 		A5386EF32136A35300C86A1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5386EF12136A35300C86A1D /* LaunchScreen.storyboard */; };
 		A5386EFE2136A35300C86A1D /* Keepie_uppieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EFD2136A35300C86A1D /* Keepie_uppieTests.swift */; };
 		A5386F092136A35300C86A1D /* Keepie_uppieUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */; };
+		A54FC218217DDDD600431EF2 /* shin.png in Resources */ = {isa = PBXBuildFile; fileRef = A54FC216217DDDD600431EF2 /* shin.png */; };
+		A54FC21A217DE33E00431EF2 /* hip.png in Resources */ = {isa = PBXBuildFile; fileRef = A54FC219217DE33E00431EF2 /* hip.png */; };
+		A54FC21C217E10B300431EF2 /* shoesR.png in Resources */ = {isa = PBXBuildFile; fileRef = A54FC21B217E10B200431EF2 /* shoesR.png */; };
+		A5BEFB7D2136DB5400BB51C7 /* shoes.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB7C2136DB5400BB51C7 /* shoes.png */; };
+		A5BEFB7F2136EAEB00BB51C7 /* background1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */; };
+		A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB802136ED9D00BB51C7 /* background.jpg */; };
+		A5BEFB832136F15800BB51C7 /* ball1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEFB822136F15700BB51C7 /* ball1.png */; };
+		A5FA9F5C2136B0CE00B0D2CC /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = A5FA9F5B2136B0CE00B0D2CC /* Ball.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +61,14 @@
 		A5386F042136A35300C86A1D /* Keepie uppieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Keepie uppieUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keepie_uppieUITests.swift; sourceTree = "<group>"; };
 		A5386F0A2136A35300C86A1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A54FC216217DDDD600431EF2 /* shin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shin.png; sourceTree = "<group>"; };
+		A54FC219217DE33E00431EF2 /* hip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hip.png; path = ../keepieUppie/images/hip.png; sourceTree = "<group>"; };
+		A54FC21B217E10B200431EF2 /* shoesR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoesR.png; sourceTree = "<group>"; };
+		A5BEFB7C2136DB5400BB51C7 /* shoes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shoes.png; sourceTree = "<group>"; };
+		A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background1.jpg; sourceTree = "<group>"; };
+		A5BEFB802136ED9D00BB51C7 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		A5BEFB822136F15700BB51C7 /* ball1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball1.png; sourceTree = "<group>"; };
+		A5FA9F5B2136B0CE00B0D2CC /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +103,14 @@
 				A5386EFC2136A35300C86A1D /* Keepie uppieTests */,
 				A5386F072136A35300C86A1D /* Keepie uppieUITests */,
 				A5386EE02136A35200C86A1D /* Products */,
+				A54FC21B217E10B200431EF2 /* shoesR.png */,
+				A54FC219217DE33E00431EF2 /* hip.png */,
+				A54FC216217DDDD600431EF2 /* shin.png */,
+				A5FA9F5B2136B0CE00B0D2CC /* Ball.png */,
+				A5BEFB7C2136DB5400BB51C7 /* shoes.png */,
+				A5BEFB7E2136EAEB00BB51C7 /* background1.jpg */,
+				A5BEFB822136F15700BB51C7 /* ball1.png */,
+				A5BEFB802136ED9D00BB51C7 /* background.jpg */,
 			);
 			sourceTree = "<group>";
 		};
@@ -238,9 +262,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5BEFB7F2136EAEB00BB51C7 /* background1.jpg in Resources */,
 				A5386EEE2136A35200C86A1D /* Main.storyboard in Resources */,
 				A5386EE52136A35200C86A1D /* GameScene.sks in Resources */,
+				A54FC21A217DE33E00431EF2 /* hip.png in Resources */,
 				A5386EF02136A35300C86A1D /* Assets.xcassets in Resources */,
+				A5BEFB812136ED9D00BB51C7 /* background.jpg in Resources */,
+				A54FC218217DDDD600431EF2 /* shin.png in Resources */,
+				A5FA9F5C2136B0CE00B0D2CC /* Ball.png in Resources */,
+				A5BEFB832136F15800BB51C7 /* ball1.png in Resources */,
+				A5BEFB7D2136DB5400BB51C7 /* shoes.png in Resources */,
+				A54FC21C217E10B300431EF2 /* shoesR.png in Resources */,
 				A5386EF32136A35300C86A1D /* LaunchScreen.storyboard in Resources */,
 				A5386EE72136A35200C86A1D /* Actions.sks in Resources */,
 			);
@@ -445,6 +477,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
 				INFOPLIST_FILE = "Keepie uppie/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -463,6 +496,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
 				INFOPLIST_FILE = "Keepie uppie/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
