@@ -9,7 +9,16 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+let MinTimeContactInterval = 0.1
+
+struct PhysicsCategory {
+    static let None:   UInt32 = 0
+    static let Body:   UInt32 = 0b01  // 1
+    static let Leg:    UInt32 = 0b10  // 2
+    static let Ball:   UInt32 = 0b100 // 4
+}
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
@@ -23,8 +32,19 @@ class GameScene: SKScene {
     private var maxY : CGFloat?
     
     var background = SKSpriteNode(imageNamed: "background.jpg")
+
+    // score
+    private var scoreLabel: SKLabelNode!
+    private var scoreValue: Int = 0 {
+        didSet {
+            scoreLabel.text = String(self.scoreValue)
+        }
+    }
+    
+    private var lastContactTime = Date()
     
     override func didMove(to view: SKView) {
+        physicsWorld.contactDelegate = self
         
         background.setScale(self.size.height / background.size.height)
         background.zPosition = -1
@@ -36,6 +56,12 @@ class GameScene: SKScene {
 //                                           size: player.size)
         player.position = CGPoint(x: -3 * self.size.width / 8, y: 0)
         player.zPosition = 3
+        player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.size)
+        player.physicsBody?.linearDamping = 10
+        player.physicsBody?.affectedByGravity=false
+        player.physicsBody?.categoryBitMask = PhysicsCategory.Body
+        player.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        player.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
 //        player.physicsBody?.isDynamic=false
         self.addChild(player)
         
@@ -56,6 +82,17 @@ class GameScene: SKScene {
 //        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
 //        self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+        
+        // score setup
+        scoreLabel = SKLabelNode()
+//        scoreLabel.position = CGPoint(x: self.size.width / 2, y: 0)
+        scoreLabel.position = CGPoint(x: 0, y: self.size.height * 2 / 5)
+        scoreLabel.fontSize = 80
+        scoreLabel.zPosition = 4
+        scoreLabel.text = "123"
+        self.addChild(scoreLabel)
+        
+        scoreValue = 0
     }
     
     func createLeg() {
@@ -76,6 +113,9 @@ class GameScene: SKScene {
         hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
         hip.physicsBody?.linearDamping = 10
         hip.physicsBody?.affectedByGravity=false
+        hip.physicsBody?.categoryBitMask = PhysicsCategory.Leg
+        hip.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        hip.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         leg.addChild(hip)
         
         let ass = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
@@ -94,6 +134,9 @@ class GameScene: SKScene {
         shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
         shin.physicsBody?.linearDamping = 10
         shin.physicsBody?.affectedByGravity=false
+        shin.physicsBody?.categoryBitMask = PhysicsCategory.Leg
+        shin.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        shin.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         leg.addChild(shin)
         
         let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
@@ -115,6 +158,9 @@ class GameScene: SKScene {
         foot.physicsBody?.allowsRotation = false
         foot.physicsBody?.affectedByGravity = false
         foot.physicsBody?.linearDamping = 10
+        foot.physicsBody?.categoryBitMask = PhysicsCategory.Leg
+        foot.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        foot.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         leg.addChild(foot)
         
         let ankle = SKPhysicsJointPin.joint(withBodyA: shin.physicsBody!,
@@ -133,6 +179,9 @@ class GameScene: SKScene {
         ball.physicsBody?.restitution = 1.1
         ball.physicsBody?.linearDamping = 0.3
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
+        ball.physicsBody?.categoryBitMask = PhysicsCategory.Ball
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.Leg | PhysicsCategory.Body
+        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Leg | PhysicsCategory.Body
         self.addChild(ball)
     }
     
@@ -176,4 +225,16 @@ class GameScene: SKScene {
         
         self.leg?.zRotation += 0.1
     }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        let timeDiff = Double(Date().timeIntervalSince1970 - lastContactTime.timeIntervalSince1970)
+        if (timeDiff < MinTimeContactInterval) {
+            return
+        }
+        scoreValue += 1
+//        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+//        print("Collision = \(collision)")
+    }
+    
 }

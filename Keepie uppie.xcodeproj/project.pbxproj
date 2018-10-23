@@ -22,6 +22,7 @@
 		D4165011217F318A00F93ED6 /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165010217F318A00F93ED6 /* MyUtils.swift */; };
 		D4165013217F343800F93ED6 /* MainMenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D4165012217F343800F93ED6 /* MainMenuScene.sks */; };
 		D4165015217F722600F93ED6 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D4165014217F722600F93ED6 /* GameScene.sks */; };
+		D4165018217F788A00F93ED6 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165017217F788A00F93ED6 /* Player.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		D4165010217F318A00F93ED6 /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyUtils.swift; sourceTree = "<group>"; };
 		D4165012217F343800F93ED6 /* MainMenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenuScene.sks; sourceTree = "<group>"; };
 		D4165014217F722600F93ED6 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		D4165017217F788A00F93ED6 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 		A5386EE12136A35200C86A1D /* Keepie uppie */ = {
 			isa = PBXGroup;
 			children = (
+				D4165016217F787200F93ED6 /* Game */,
 				D4165003217F2AFD00F93ED6 /* Scenes */,
 				A5386EE22136A35200C86A1D /* AppDelegate.swift */,
 				A5386EEA2136A35200C86A1D /* GameViewController.swift */,
@@ -155,6 +158,14 @@
 				D4165006217F2AFD00F93ED6 /* WorkshopScene.swift */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		D4165016217F787200F93ED6 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				D4165017217F788A00F93ED6 /* Player.swift */,
+			);
+			path = Game;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,6 +308,7 @@
 				D4165011217F318A00F93ED6 /* MyUtils.swift in Sources */,
 				D416500A217F2AFD00F93ED6 /* SceneManager.swift in Sources */,
 				D416500F217F2B9800F93ED6 /* Extern.swift in Sources */,
+				D4165018217F788A00F93ED6 /* Player.swift in Sources */,
 				A5386EE32136A35200C86A1D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
