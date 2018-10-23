@@ -15,3 +15,6 @@ let PlayableRect = CGRect(x: 0, y: 0, width: GameSize.width, height: GameSize.he
 
 let PercentageButtonWidth = 0.2
 let PercentageButtonHeight = 0.75
+
+let ScoreDefault = 0
+let SettingsKeyScore = "KeyScore"

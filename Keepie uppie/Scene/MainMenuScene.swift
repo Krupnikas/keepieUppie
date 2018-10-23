@@ -12,53 +12,35 @@ import CoreGraphics
 
 class MainMenuScene: SKScene {
     
-    let buttonSize: CGSize
-    var buttonStart: SKNode!
-    var buttonShop: SKNode!
-    var buttonAbout: SKNode!
-    
-    override init(size: CGSize) {
-        
-        buttonSize = CGSize(width: GameSize.width * CGFloat(PercentageButtonWidth),
-                            height: GameSize.height * CGFloat(PercentageButtonHeight))
-        
-        super.init(size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var background: SKSpriteNode!
+    private var buttonPlay: SKSpriteNode!
+    private var labelScore: SKLabelNode!
+//    override init(size: CGSize) {
+//
+//
+//        buttonSize = CGSize(width: GameSize.width * CGFloat(PercentageButtonWidth),
+//                            height: GameSize.height * CGFloat(PercentageButtonHeight))
+//
+//        super.init(size: size)
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     override func didMove(to view: SKView) {
-        
-        createButtons()
-        
+        background = childNode(withName: "background") as? SKSpriteNode
+        buttonPlay = childNode(withName: "//button_play") as? SKSpriteNode
+        labelScore = childNode(withName: "//label_score") as? SKLabelNode
+        labelScore.text = String(SceneManager.instance.score)
     }
-    
-    func createButtons()
-    {
-        buttonStart = SKSpriteNode(imageNamed: "button_start")
-        buttonStart.position = CGPoint(x: self.frame.midX, y: self.frame.midY);
-        
-        print(buttonSize)
-        
-        buttonShop = SKSpriteNode(imageNamed: "button_shop")
-        buttonShop.position = CGPoint(x: self.frame.midX, y: self.frame.midY - buttonStart.frame.height);
-        
-        buttonAbout = SKSpriteNode(imageNamed: "button_about")
-        buttonAbout.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 2 * buttonStart.frame.height);
-        
-        self.addChild(buttonStart)
-        self.addChild(buttonShop)
-        self.addChild(buttonAbout)
-    }
-    
-    func onStartClicked() {
-        view!.presentScene(SceneManager.instance.game)
+
+    func onPlayClicked() {
+        SceneManager.instance.presentGameScene()
     }
     
     func onShopClicked() {
-        view!.presentScene(SceneManager.instance.workshop)
+        
     }
     
     func onAboutClicked() {
@@ -66,15 +48,14 @@ class MainMenuScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        let touchLocation = touch!.location(in: self)
+        if touches.isEmpty {
+            return
+        }
+        let touch = touches.first!
+        let touchLocation = touch.location(in: background)
         // Check if the location of the touch is within the button's bounds
-        if buttonStart.contains(touchLocation) {
-            onStartClicked()
-        } else if buttonShop.contains(touchLocation) {
-            onShopClicked()
-        } else if buttonAbout.contains(touchLocation) {
-            onAboutClicked()
+        if buttonPlay.contains(touchLocation) {
+            onPlayClicked()
         }
     }
     

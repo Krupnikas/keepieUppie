@@ -11,7 +11,7 @@ import SpriteKit
 // singleton to navigate between scenes
 
 class SceneManagerSetupHelper {
-    var view: SKView?
+    var view: SKView!
 }
 
 class SceneManager {
@@ -21,6 +21,7 @@ class SceneManager {
     
     class func setup(view: SKView) {
         SceneManager.setup.view = view
+        
     }
     
     private init() {
@@ -29,23 +30,34 @@ class SceneManager {
             fatalError("SceneManager: init: setup has not been called")
         }
         
-        mainMenu = MainMenuScene(size: GameSize)
+        if let scoreLoaded = getUserScoreFromDevice() {
+            score = scoreLoaded
+        } else {
+            score = ScoreDefault
+        }
+        
+        mainMenu = MainMenuScene(fileNamed: "MainMenuScene.sks")!
         mainMenu.scaleMode = .aspectFill
         
-        game = GameScene(size: GameSize)
+        game = GameScene(fileNamed: "GameScene.sks")!
         game.scaleMode = .aspectFill
         
         workshop = WorkshopScene(size: GameSize)
         workshop.scaleMode = .aspectFill
-        
     }
     
-    func presentMainMeun() {
-        
+    func presentMainMenuScene() {
+        SceneManager.setup.view.presentScene(SceneManager.instance.mainMenu)
+    }
+    
+    func presentGameScene() {
+        SceneManager.setup.view.presentScene(SceneManager.instance.game)
     }
     
     var mainMenu: MainMenuScene
     var game: GameScene
     var workshop: WorkshopScene
+    
+    var score: Int
 }
  
