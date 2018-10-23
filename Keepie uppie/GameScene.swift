@@ -17,6 +17,11 @@ class GameScene: SKScene {
     private var leg : SKSpriteNode?
     private var targetPos : CGPoint?
     
+    private var defautTargetPos : CGPoint?
+    
+    private var minX : CGFloat?
+    private var maxY : CGFloat?
+    
     var background = SKSpriteNode(imageNamed: "background.jpg")
     
     override func didMove(to view: SKView) {
@@ -30,11 +35,16 @@ class GameScene: SKScene {
 //        player.physicsBody = SKPhysicsBody(texture: player.texture!,
 //                                           size: player.size)
         player.position = CGPoint(x: -3 * self.size.width / 8, y: 0)
+        player.zPosition = 3
 //        player.physicsBody?.isDynamic=false
         self.addChild(player)
         
-        targetPos = CGPoint(x: self.size.width / 3,
-                            y: -self.size.height/4)
+        self.minX = player.position.x
+        self.maxY = 0
+        self.defautTargetPos = CGPoint(x: self.size.width / 8,
+                                       y: -3 * self.size.height/8)
+        
+        targetPos = self.defautTargetPos
     
         createLeg()
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run {
@@ -130,11 +140,17 @@ class GameScene: SKScene {
         if let label = self.label {
             label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
         }
-        targetPos = touches.first!.location(in: self)
+        let t = touches.first!.location(in: self)
+        targetPos = CGPoint(x: max(self.minX!, t.x - 100), y: min(self.maxY!, t.y + 150))
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        targetPos = touches.first!.location(in: self)
+        let t = touches.first!.location(in: self)
+        targetPos = CGPoint(x: max(self.minX!, t.x - 100), y: min(self.maxY!, t.y + 150))
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        targetPos = self.defautTargetPos
     }
     
     override func update(_ currentTime: TimeInterval) {
