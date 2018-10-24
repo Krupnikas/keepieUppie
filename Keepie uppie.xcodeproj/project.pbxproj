@@ -15,6 +15,7 @@
 		A5386EF32136A35300C86A1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5386EF12136A35300C86A1D /* LaunchScreen.storyboard */; };
 		A5386EFE2136A35300C86A1D /* Keepie_uppieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EFD2136A35300C86A1D /* Keepie_uppieTests.swift */; };
 		A5386F092136A35300C86A1D /* Keepie_uppieUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */; };
+		A5C01DB0218095D10006A347 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C01DAF218095D10006A347 /* GoogleMobileAds.framework */; };
 		D4165009217F2AFD00F93ED6 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165004217F2AFD00F93ED6 /* MainMenuScene.swift */; };
 		D416500A217F2AFD00F93ED6 /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165005217F2AFD00F93ED6 /* SceneManager.swift */; };
 		D416500B217F2AFD00F93ED6 /* WorkshopScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165006217F2AFD00F93ED6 /* WorkshopScene.swift */; };
@@ -57,6 +58,7 @@
 		A5386F042136A35300C86A1D /* Keepie uppieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Keepie uppieUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keepie_uppieUITests.swift; sourceTree = "<group>"; };
 		A5386F0A2136A35300C86A1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5C01DAF218095D10006A347 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "../GoogleMobileAdsSdkiOS-7.35.1/GoogleMobileAds.framework"; sourceTree = "<group>"; };
 		D4165004217F2AFD00F93ED6 /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 		D4165005217F2AFD00F93ED6 /* SceneManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
 		D4165006217F2AFD00F93ED6 /* WorkshopScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkshopScene.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5C01DB0218095D10006A347 /* GoogleMobileAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +98,7 @@
 		A5386ED62136A35200C86A1D = {
 			isa = PBXGroup;
 			children = (
+				A5C01DAF218095D10006A347 /* GoogleMobileAds.framework */,
 				A5386EE12136A35200C86A1D /* Keepie uppie */,
 				A5386EFC2136A35300C86A1D /* Keepie uppieTests */,
 				A5386F072136A35300C86A1D /* Keepie uppieUITests */,
@@ -483,14 +487,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C97S8YETBG;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
 				INFOPLIST_FILE = "Keepie uppie/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "deserg.Keepie-uppie";
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppie";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -502,14 +506,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C97S8YETBG;
+				DEVELOPMENT_TEAM = QVGBHVZ8CQ;
 				INFOPLIST_FILE = "Keepie uppie/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "deserg.Keepie-uppie";
+				PRODUCT_BUNDLE_IDENTIFIER = "krup.Keepie-uppie";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
