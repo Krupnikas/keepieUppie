@@ -18,7 +18,8 @@ struct PhysicsCategory {
     static let Shin:   UInt32 = 0b100    // 4
     static let Foot:   UInt32 = 0b1000   // 8
     static let Leg:    UInt32 = Hip | Shin | Foot  // 14
-    static let Ball:   UInt32 = 0b10000 // 16
+    static let Ball:   UInt32 = 0b10000  // 16
+    static let Floor:  UInt32 = 0b100000 // 32
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -63,8 +64,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         background = childNode(withName: "background") as? SKSpriteNode
         
+        floor = childNode(withName: "floor") as? SKSpriteNode
+        floor.physicsBody?.categoryBitMask = PhysicsCategory.Floor
+        floor.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        floor.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+        
         player = childNode(withName: "player") as? SKSpriteNode
-        player.setScale(2)
         player.physicsBody?.categoryBitMask = PhysicsCategory.Body
         player.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         player.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
@@ -143,8 +148,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.restitution = 1.1
         
         ball.physicsBody?.categoryBitMask = PhysicsCategory.Ball
-        ball.physicsBody?.collisionBitMask = PhysicsCategory.Leg | PhysicsCategory.Body
-        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Leg | PhysicsCategory.Body
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.Leg | PhysicsCategory.Body | PhysicsCategory.Floor
+        ball.physicsBody?.contactTestBitMask = ball.physicsBody!.collisionBitMask
         
         self.addChild(ball)
     }
