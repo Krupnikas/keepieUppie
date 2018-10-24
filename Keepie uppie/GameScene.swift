@@ -11,6 +11,7 @@ import GameplayKit
 
 let MinTimeContactInterval = 0.1
 let MinContactMaxDistanceCoeff = CGFloat(4)
+let TouchNoEffectSizeCoeff = CGFloat(0.8)
 
 let SceneStatusGame = 0
 let SceneStatusMenu = 1
@@ -63,8 +64,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // movement
     private var targetPos : CGPoint?
-    
     private var defautTargetPos : CGPoint?
+    private var touchNoEffectCircle: CGFloat?
     
     private var minX : CGFloat?
     private var maxY : CGFloat?
@@ -106,12 +107,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.minX = player.position.x
         self.maxY = 0
-        self.defautTargetPos = CGPoint(x: self.size.width / 8,
-                                       y: -3 * self.size.height/8)
-        
-        targetPos = self.defautTargetPos
     
         createLeg()
+        defautTargetPos = foot.position
+        targetPos = defautTargetPos
+        touchNoEffectCircle = hip.size.height * TouchNoEffectSizeCoeff
+        
         createBall()
         
         minContactDistance = ballRadius * MinContactMaxDistanceCoeff
@@ -153,33 +154,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hip.physicsBody?.categoryBitMask = PhysicsCategory.Hip
         hip.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         hip.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
-        
-        let ass = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
-                                          bodyB: self.physicsBody!,
-                                          anchor: CGPoint(x: hip.position.x,
-                                                          y: hip.position.y + 140))
-        self.physicsWorld.add(ass)
 
         shin = childNode(withName: "//shin") as? SKSpriteNode
         shin.physicsBody?.categoryBitMask = PhysicsCategory.Shin
         shin.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         shin.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         
-        let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
-                                           bodyB:  shin.physicsBody!,
-                                           anchor: CGPoint(x: shin.position.x, y: shin.position.y + 140))
-        
-        self.physicsWorld.add(knee)
-        
         foot = childNode(withName: "//foot") as? SKSpriteNode
         foot.physicsBody?.categoryBitMask = PhysicsCategory.Foot
         foot.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         foot.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+
+//        CGPoint(x: 0, y: 0)
+        
+        
+        let ass = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
+                                          bodyB: self.physicsBody!,
+                                          anchor: player.position)
+        self.physicsWorld.add(ass)
+        
+        let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
+                                           bodyB:  shin.physicsBody!,
+                                           anchor: CGPoint(x: shin.position.x, y: shin.position.y + shin.size.height / 2))
+        
+        self.physicsWorld.add(knee)
         
         let ankle = SKPhysicsJointPin.joint(withBodyA: shin.physicsBody!,
                                             bodyB: foot.physicsBody!,
-                                            anchor: foot.position)
-//        CGPoint(x: 0, y: 0)
+                                            anchor: CGPoint(x: shin.position.x, y: shin.position.y - shin.size.height / 2))
         self.physicsWorld.add(ankle)
     }
     
@@ -208,24 +210,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func resetBall() {
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
+        ball.physicsBody?.angularVelocity = 0
         ball.position = ballOriginPosition
     }
     
-    func onTouch(locaton: CGPoint) {
+    func onTouchGame(location: CGPoint) {
+//        let dist = (location - player.position).length()
+
+        targetPos = CGPoint(x: max(self.minX!, location.x - 50), y: min(self.maxY!, location.y + 50))
+    }
+    
+    func onTouch(location: CGPoint) {
         switch status {
         case SceneStatusGame:
-            targetPos = CGPoint(x: max(self.minX!, locaton.x - 50), y: min(self.maxY!, locaton.y + 50))
+            onTouchGame(location: location)
         case SceneStatusMenu:
-            if buttonMenu.contains(locaton) {
+            if buttonMenu.contains(location) {
                 SceneManager.instance.presentMainMenuScene()
-            } else if buttonRestart.contains(locaton) {
+            } else if buttonRestart.contains(location) {
                 scoreValue = 0
                 setStatus(statusNew: SceneStatusGame)
-            } else if buttonAd.contains(locaton) {
+            } else if buttonAd.contains(location) {
                 setStatus(statusNew: SceneStatusAd)
             }
         case SceneStatusContinue:
-            if buttonContinue.contains(locaton) {
+            if buttonContinue.contains(location) {
                 setStatus(statusNew: SceneStatusGame)
             }
         default:
@@ -238,15 +247,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        onTouch(locaton: touches.first!.location(in: self))
+        onTouch(location: touches.first!.location(in: self))
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.isEmpty {
             return
         }
-        
-        onTouch(locaton: touches.first!.location(in: self))
+        onTouchGame(location: touches.first!.location(in: self))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
