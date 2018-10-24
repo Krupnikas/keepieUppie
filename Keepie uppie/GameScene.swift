@@ -10,6 +10,7 @@ import SpriteKit
 import GameplayKit
 
 let MinTimeContactInterval = 0.1
+let MinContactMaxDistanceCoeff = CGFloat(4)
 
 let SceneStatusGame = 0
 let SceneStatusMenu = 1
@@ -22,15 +23,12 @@ struct PhysicsCategory {
     static let Hip:    UInt32 = 0b10     // 2
     static let Shin:   UInt32 = 0b100    // 4
     static let Foot:   UInt32 = 0b1000   // 8
-    static let Leg:    UInt32 = Hip | Shin | Foot  // 14
+    static let Leg:    UInt32 = Hip | Shin | Foot
     static let Ball:   UInt32 = 0b10000  // 16
     static let Floor:  UInt32 = 0b100000 // 32
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
     
     // game nodes
     private var gameNode: SKNode!
@@ -40,6 +38,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var leg = SKNode()
     
     private var ball: SKSpriteNode!
+    private var ballOriginPosition: CGPoint!
+    private var ballRadius: CGFloat!
+    private var minContactDistance: CGFloat!
     
     private var player: SKSpriteNode!
     
@@ -77,6 +78,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private var lastContactTime = Date()
+    private var lastContactPoint: CGPoint!
+    private var lastContactMaxDistance: CGFloat!
     
     // game status
     private var status = SceneStatusGame
@@ -99,7 +102,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player = childNode(withName: "//player") as? SKSpriteNode
         player.physicsBody?.categoryBitMask = PhysicsCategory.Body
         player.physicsBody?.collisionBitMask = PhysicsCategory.Ball
-        player.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+        player.physicsBody?.contactTestBitMask = PhysicsCategory.None
         
         self.minX = player.position.x
         self.maxY = 0
@@ -109,6 +112,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         targetPos = self.defautTargetPos
     
         createLeg()
+        createBall()
+        
+        minContactDistance = ballRadius * MinContactMaxDistanceCoeff
 //        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
@@ -116,6 +122,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // score setup
         scoreLabel = childNode(withName: "//label_score") as? SKLabelNode
         scoreValue = 0
+        
+        lastContactPoint = hip.position
+        lastContactMaxDistance = (hip.position - ball.position).length()
 
         // menu setup
         menuNode = childNode(withName: "menu_node")
@@ -131,8 +140,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         continueNode = childNode(withName: "continue_node")
         buttonContinue = childNode(withName: "//button_continue") as? SKSpriteNode
         
-        // start
-        showGame()
+        // status
+        setStatus(statusNew: SceneStatusGame)
         
     }
     
@@ -174,14 +183,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.add(ankle)
     }
     
-    func createBall(atPoint pos : CGPoint) {
-        let ball = SKSpriteNode(imageNamed: "ball1")
-//        let ball = childNode(withName: "ball") as? SKSpriteNode
-        ball.position = pos
-        ball.name = "ball"
+    func createBall() {
+//        let ball = SKSpriteNode(imageNamed: "ball1")
+        ball = childNode(withName: "//ball") as? SKSpriteNode
+        ballOriginPosition = ball.position
+        ballRadius = ball.size.width / 2
+//        ball.position = pos
+//        ball.name = "ball"
 
-        ball.setScale((self.size.width / 8) / ball.size.width)
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2)
+//        ball.setScale((self.size.width / 8) / ball.size.width)
+//        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2)
+        
         ball.physicsBody?.restitution = 1.1
         ball.physicsBody?.linearDamping = 0.3
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
@@ -189,48 +201,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         ball.physicsBody?.categoryBitMask = PhysicsCategory.Ball
         ball.physicsBody?.collisionBitMask = PhysicsCategory.Leg | PhysicsCategory.Body | PhysicsCategory.Floor
-        ball.physicsBody?.contactTestBitMask = ball.physicsBody!.collisionBitMask
+        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Leg | PhysicsCategory.Floor
         
-        self.addChild(ball)
+//        self.addChild(ball)
     }
     
     func resetBall() {
-        
+        ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
+        ball.position = ballOriginPosition
+    }
+    
+    func onTouch(locaton: CGPoint) {
+        switch status {
+        case SceneStatusGame:
+            targetPos = CGPoint(x: max(self.minX!, locaton.x - 50), y: min(self.maxY!, locaton.y + 50))
+        case SceneStatusMenu:
+            if buttonMenu.contains(locaton) {
+                SceneManager.instance.presentMainMenuScene()
+            } else if buttonRestart.contains(locaton) {
+                scoreValue = 0
+                setStatus(statusNew: SceneStatusGame)
+            } else if buttonAd.contains(locaton) {
+                setStatus(statusNew: SceneStatusAd)
+            }
+        case SceneStatusContinue:
+            if buttonContinue.contains(locaton) {
+                setStatus(statusNew: SceneStatusGame)
+            }
+        default:
+            return
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
+        if touches.isEmpty {
+            return
         }
-        let t = touches.first!.location(in: self)
-        targetPos = CGPoint(x: max(self.minX!, t.x - 100), y: min(self.maxY!, t.y + 150))
+        
+        onTouch(locaton: touches.first!.location(in: self))
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.isEmpty {
             return
         }
-
-        let t = touches.first!.location(in: self)
-        switch status {
-        case SceneStatusGame:
-            targetPos = CGPoint(x: max(self.minX!, t.x - 100), y: min(self.maxY!, t.y + 150))
-        case SceneStatusMenu:
-            if buttonMenu.contains(t) {
-                SceneManager.instance.presentMainMenuScene()
-            } else if buttonRestart.contains(t) {
-                scoreValue = 0
-                setStatus(statusNew: SceneStatusGame)
-            } else if buttonAd.contains(t) {
-                setStatus(statusNew: SceneStatusAd)
-            }
-        case SceneStatusContinue:
-            if buttonContinue.contains(t) {
-                setStatus(statusNew: SceneStatusGame)
-            }
-        default:
-            return
-        }
+        
+        onTouch(locaton: touches.first!.location(in: self))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -247,10 +263,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             shin.physicsBody?.applyAngularImpulse(10 * (hip.zRotation - shin.zRotation - 0.2))
         }
         
-        if let ball = self.childNode(withName: "ball") {
-            if (!self.frame.contains((ball.position))) {
-                self.setStatus(statusNew: SceneStatusMenu)
-            }
+        if ball.position.x + ballRadius < self.frame.minX ||
+            ball.position.x - ballRadius > self.frame.maxX {
+            self.setStatus(statusNew: SceneStatusMenu)
+        }
+        
+        let distance = (ball.position - lastContactPoint).length()
+        if distance > lastContactMaxDistance {
+            lastContactMaxDistance = distance
         }
     }
     
@@ -270,9 +290,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let timeDiff = Double(now.timeIntervalSince1970 - lastContactTime.timeIntervalSince1970)
         lastContactTime = now
         
-        if (timeDiff < MinTimeContactInterval) {
+        let maxDist = lastContactMaxDistance!
+        lastContactPoint = contact.contactPoint
+        lastContactMaxDistance = ballRadius
+        
+        if (timeDiff < MinTimeContactInterval || maxDist < minContactDistance) {
             return
         }
+    
         
         scoreValue += 1
     }
@@ -310,19 +335,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // game
     func showGame() {
-        run(SKAction.repeatForever(SKAction.sequence([SKAction.run {
-            self.createBall(atPoint: CGPoint(x:  self.size.width / 8 ,
-                                             y:  self.size.width / 3 ))
-            }, SKAction.wait(forDuration: 10)])))
+        resetBall()
+        self.scoreLabel.isHidden = false
     }
     
     func hideGame() {
-        self.removeAllActions()
+        self.scoreLabel.isHidden = true
     }
     
     // menu
     func showMenu() {
         self.menuNode.isHidden = false
+        if (scoreValue > SceneManager.instance.score) {
+            SceneManager.instance.score = scoreValue
+        }
     }
     
     func hideMenu() {

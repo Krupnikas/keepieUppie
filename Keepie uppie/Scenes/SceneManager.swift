@@ -36,27 +36,37 @@ class SceneManager {
             score = ScoreDefault
         }
         
-        mainMenu = MainMenuScene(fileNamed: "MainMenuScene.sks")!
-        mainMenu.scaleMode = .aspectFill
+//        mainMenu = MainMenuScene(fileNamed: "MainMenuScene.sks")!
+//        mainMenu.scaleMode = .aspectFill
         
-        game = GameScene(fileNamed: "GameScene.sks")!
-        game.scaleMode = .aspectFill
+//        game = GameScene(fileNamed: "GameScene.sks")!
+//        game.scaleMode = .aspectFill
         
-        workshop = WorkshopScene(size: GameSize)
-        workshop.scaleMode = .aspectFill
+//        workshop = WorkshopScene(size: GameSize)
+//        workshop.scaleMode = .aspectFill
     }
     
     func presentMainMenuScene() {
-        SceneManager.setup.view.presentScene(SceneManager.instance.mainMenu)
+        let mainMenu = MainMenuScene(fileNamed: "MainMenuScene.sks")!
+        mainMenu.scaleMode = .aspectFill
+        SceneManager.setup.view.presentScene(mainMenu)
     }
     
     func presentGameScene() {
-        SceneManager.setup.view.presentScene(SceneManager.instance.game)
+        let game = GameScene(fileNamed: "GameScene.sks")!
+        game.scaleMode = .aspectFill
+        SceneManager.setup.view.presentScene(game)
     }
     
-    var mainMenu: MainMenuScene
-    var game: GameScene
-    var workshop: WorkshopScene
+    func presentWorkshopScene() {
+        let workshop = WorkshopScene(size: GameSize)
+        workshop.scaleMode = .aspectFill
+        SceneManager.setup.view.presentScene(workshop)
+    }
+    
+//    var mainMenu: MainMenuScene
+//    var game: GameScene
+//    var workshop: WorkshopScene
     
     var score: Int {
         didSet {
