@@ -58,6 +58,10 @@ class SceneManager {
     var game: GameScene
     var workshop: WorkshopScene
     
-    var score: Int
+    var score: Int {
+        didSet {
+            setUserScoreFromDevice(score: score)
+        }
+    }
 }
  
