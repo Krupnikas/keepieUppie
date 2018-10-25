@@ -263,7 +263,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        foot.zRotation = pow(3 * (foot?.position.x)! / self.size.width, 3) + 0.3
+        foot.zRotation = pow(3 * foot.position.x / self.size.width, 3) + 0.3
         foot.physicsBody?.applyForce(CGVector(dx: 100 * (targetPos!.x - (foot?.position.x)!),
                                                dy: 100 * (targetPos!.y - (foot?.position.y)!)))
 
