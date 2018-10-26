@@ -1,6 +1,7 @@
 import Foundation
 import CoreGraphics
 
+// CGPoint
 func + (left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
 }
@@ -45,12 +46,12 @@ func /= (point: inout CGPoint, scalar: CGFloat) {
 }
 
 #if !(arch(x86_64) || arch(arm64))
-    func atan2(y: CGFloat, x: CGFloat) -> CGFloat {
-        return CGFloat(atan2f(Float(y), Float(x)))
-    }
-    func sqrt(a: CGFloat) -> CGFloat {
-        return CGFloat(sqrtf(Float(a)))
-    }
+func atan2(y: CGFloat, x: CGFloat) -> CGFloat {
+    return CGFloat(atan2f(Float(y), Float(x)))
+}
+func sqrt(a: CGFloat) -> CGFloat {
+    return CGFloat(sqrtf(Float(a)))
+}
 #endif
 
 extension CGPoint {
@@ -62,6 +63,65 @@ extension CGPoint {
     }
     var angle: CGFloat {
         return atan2(y, x)
+    }
+}
+
+
+// CGVector
+func + (left: CGVector, right: CGVector) -> CGVector {
+    return CGVector(dx: left.dx + right.dx, dy: left.dy + right.dy)
+}
+
+func += (left: inout CGVector, right: CGVector) {
+    left = left + right
+}
+
+func - (left: CGVector, right: CGVector) -> CGVector {
+    return CGVector(dx: left.dx - right.dx, dy: left.dy - right.dy)
+}
+func -= (left: inout CGVector, right: CGVector) {
+    left = left - right
+}
+func * (left: CGVector, right: CGVector) -> CGVector {
+    return CGVector(dx: left.dx * right.dx, dy: left.dy * right.dy)
+}
+func *= (left: inout CGVector, right: CGVector) {
+    left = left * right
+}
+
+func * (point: CGVector, scalar: CGFloat) -> CGVector {
+    return CGVector(dx: point.dx * scalar, dy: point.dy * scalar)
+}
+func *= (point: inout CGVector, scalar: CGFloat) {
+    point = point * scalar
+}
+
+func / (left: CGVector, right: CGVector) -> CGVector {
+    return CGVector(dx: left.dx / right.dx, dy: left.dy / right.dy)
+}
+
+func /= ( left: inout CGVector, right: CGVector) {
+    left = left / right
+}
+
+func / (point: CGVector, scalar: CGFloat) -> CGVector {
+    return CGVector(dx: point.dx / scalar, dy: point.dy / scalar)
+}
+
+func /= (point: inout CGVector, scalar: CGFloat) {
+    point = point / scalar
+}
+
+
+extension CGVector {
+    func length() -> CGFloat {
+        return sqrt(dx*dx + dy*dy)
+    }
+    func normalized() -> CGVector {
+        return self / length()
+    }
+    var angle: CGFloat {
+        return atan2(dy, dx)
     }
 }
 

@@ -18,6 +18,15 @@ let SceneStatusMenu = 1
 let SceneStatusAd = 2
 let SceneStatusContinue = 3
 
+let MaxFootAngle = π / 2
+let MinFootAngle = -π / 5 * 2
+
+let MaxFootForce = CGFloat(20000)
+
+let MaxKneeAngle = π * 5 / 6
+let MinKneeAngle = π / 3
+let KneeAngleDelta = CGFloat(0.0) // π / 30
+
 struct PhysicsCategory {
     static let None:   UInt32 = 0
     static let Body:   UInt32 = 0b1      // 1
@@ -65,10 +74,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // movement
     private var targetPos : CGPoint?
     private var defautTargetPos : CGPoint?
-    private var touchNoEffectCircle: CGFloat?
+    private var touchNoEffectCircle: CGFloat!
     
-    private var minX : CGFloat?
-    private var maxY : CGFloat?
+    private var minX : CGFloat!
+    private var maxY : CGFloat!
 
     // score
     private var scoreLabel: SKLabelNode!
@@ -105,13 +114,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         player.physicsBody?.contactTestBitMask = PhysicsCategory.None
         
-        self.minX = player.position.x
-        self.maxY = 0
-    
         createLeg()
         defautTargetPos = foot.position
         targetPos = defautTargetPos
         touchNoEffectCircle = hip.size.height * TouchNoEffectSizeCoeff
+        
+        self.minX = player.position.x + touchNoEffectCircle
+        self.maxY = player.position.y // size.height / 2
         
         createBall()
         
@@ -154,11 +163,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hip.physicsBody?.categoryBitMask = PhysicsCategory.Hip
         hip.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         hip.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+        let rotationConstraintArm = SKReachConstraints(lowerAngleLimit: CGFloat(0), upperAngleLimit: CGFloat(10))
+        hip.reachConstraints = rotationConstraintArm
+//        hip.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: π / 2)))
 
         shin = childNode(withName: "//shin") as? SKSpriteNode
         shin.physicsBody?.categoryBitMask = PhysicsCategory.Shin
         shin.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         shin.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+//        shin.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: -0.2, upperLimit: 2 * π / 3)))
         
         foot = childNode(withName: "//foot") as? SKSpriteNode
         foot.physicsBody?.categoryBitMask = PhysicsCategory.Foot
@@ -215,9 +228,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func onTouchGame(location: CGPoint) {
-//        let dist = (location - player.position).length()
-
-        targetPos = CGPoint(x: max(self.minX!, location.x - 50), y: min(self.maxY!, location.y + 50))
+        let globalMinX = -self.size.width / 2
+        let offsetX = CGFloat(50)
+        let offsetY = CGFloat(50)
+        if location.y < maxY {
+            var locationActual = CGPoint(x: max(globalMinX, location.x - offsetX), y: min(self.maxY, location.y + offsetX))
+            let vect = locationActual - player.position
+            if vect.length() <= touchNoEffectCircle {
+                locationActual = player.position + vect.normalized() * touchNoEffectCircle
+                if locationActual.x < globalMinX + offsetX {
+                    locationActual.x = globalMinX + offsetX
+                    locationActual.y = -touchNoEffectCircle
+                } else if locationActual.x < player.position.x {
+                    locationActual.y = -touchNoEffectCircle
+                }
+                
+                targetPos = locationActual
+                return
+            }
+            
+            targetPos = locationActual
+            return
+        }
+        
+        let x = max(self.minX, location.x - offsetX)
+        let xWithOffset = x - (player.position.x + touchNoEffectCircle)
+        let fy = 0.5 * xWithOffset + player.position.y + offsetY
+        targetPos = CGPoint(x: x, y: min(fy, location.y + offsetY))
     }
     
     func onTouch(location: CGPoint) {
@@ -263,14 +300,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        foot.zRotation = pow(3 * foot.position.x / self.size.width, 3) + 0.3
-        foot.physicsBody?.applyForce(CGVector(dx: 100 * (targetPos!.x - (foot?.position.x)!),
-                                               dy: 100 * (targetPos!.y - (foot?.position.y)!)))
-
-        if (hip.zRotation < shin.zRotation + 0.2 )  {
-            shin.physicsBody?.applyAngularImpulse(10 * (hip.zRotation - shin.zRotation - 0.2))
+        let footPosX = foot.position.x
+        let sizeWidth = self.size.width
+        var zRotation = 3 * footPosX / sizeWidth
+        zRotation = pow(zRotation, 3) + 0.3
+        if zRotation < MinFootAngle {
+            zRotation = MinFootAngle
+        } else if zRotation > MaxFootAngle {
+            zRotation = MaxFootAngle
         }
+        foot.zRotation = zRotation
         
+        // 100 works bad for iphone X
+        var force = CGVector(dx: 100 * (targetPos!.x - (foot?.position.x)!),
+                            dy: 100 * (targetPos!.y - (foot?.position.y)!))
+        if force.length() > MaxFootForce {
+            force = force.normalized() * MaxFootForce
+        }
+        foot.physicsBody?.applyForce(force)
+
+        let hz = hip.zRotation
+        let sz = shin.zRotation
+        let maxDiff = π - MinKneeAngle
+        let minDiff = π - MaxKneeAngle
+        let diff = hz - sz
+        if diff > maxDiff {
+            shin.physicsBody?.applyAngularImpulse(10 * (diff - maxDiff))
+//            if diff - maxDiff > KneeAngleDelta {
+//                shin.zRotation = hip.zRotation - maxDiff - KneeAngleDelta
+//            }
+        } else if diff < minDiff {
+            shin.physicsBody?.applyAngularImpulse(10 * (diff - minDiff))
+        }
+
+
         if ball.position.x + ballRadius < self.frame.minX ||
             ball.position.x - ballRadius > self.frame.maxX {
             self.setStatus(statusNew: SceneStatusMenu)
@@ -280,6 +343,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if distance > lastContactMaxDistance {
             lastContactMaxDistance = distance
         }
+    }
+
+    override func didApplyConstraints() {
+//        let maxHipRotation = π / 3
+//        if hip.zRotation > maxHipRotation {
+//            hip.zRotation = maxHipRotation
+//            //            hip.physicsBody?.applyAngularImpulse(5 * (maxHipRotation - hip.zRotation))
+//        }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
