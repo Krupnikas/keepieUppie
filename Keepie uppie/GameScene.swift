@@ -434,6 +434,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     // menu
     func showMenu() {
         self.menuNode.isHidden = false
+        let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
+        if !isReady {
+            self.buttonAd.isHidden = true
+        } else {
+            self.buttonAd.isHidden = false
+        }
         if (scoreValue > SceneManager.instance.score) {
             SceneManager.instance.score = scoreValue
         }
