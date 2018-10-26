@@ -9,12 +9,21 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import GoogleMobileAds
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
 
+    private var rewardBasedVideo: GADRewardBasedVideoAd!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        rewardBasedVideo = GADRewardBasedVideoAd.sharedInstance()
+        rewardBasedVideo?.delegate = self
+        let request = GADRequest()
+        request.testDevices = [ "baf3dabdc3252bf84e84d71e87aa9adf" ] // Sample device ID
+        rewardBasedVideo.load(request, withAdUnitID: "ca-app-pub-3940256099942544/1712485313")
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -50,5 +59,47 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    // reward video methods
+    func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd,
+                            didRewardUserWith reward: GADAdReward) {
+        print("Reward received with currency: \(reward.type), amount \(reward.amount).")
+        
+        SceneManager.instance.notifyAdWatchedEnough()
+    }
+    
+    func rewardBasedVideoAdDidReceive(_ rewardBasedVideoAd:GADRewardBasedVideoAd) {
+        print("Reward based video ad is received.")
+        
+    }
+    
+    func rewardBasedVideoAdDidOpen(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        print("Opened reward based video ad.")
+        SceneManager.instance.notifyAdStarted()
+    }
+    
+    func rewardBasedVideoAdDidStartPlaying(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        print("Reward based video ad started playing.")
+    }
+    
+    func rewardBasedVideoAdDidCompletePlaying(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        print("Reward based video ad has completed.")
+        
+    }
+    
+    func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        print("Reward based video ad is closed.")
+        SceneManager.instance.notifyAdClosed()
+        rewardBasedVideoAd.load(GADRequest(), withAdUnitID: "ca-app-pub-3940256099942544/1712485313")
+    }
+    
+    func rewardBasedVideoAdWillLeaveApplication(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
+        print("Reward based video ad will leave application.")
+    }
+    
+    func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd,
+                            didFailToLoadWithError error: Error) {
+        print("Reward based video ad failed to load.")
     }
 }

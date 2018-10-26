@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import GoogleMobileAds
 
 let MinTimeContactInterval = 0.1
 let MinContactMaxDistanceCoeff = CGFloat(4)
@@ -38,7 +39,7 @@ struct PhysicsCategory {
     static let Floor:  UInt32 = 0b100000 // 32
 }
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     // game nodes
     private var gameNode: SKNode!
@@ -67,6 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // ad nodes
     private var adNode: SKNode!
+    private var watchedEnough = false
     
     // continue nodes
     private var continueNode: SKNode!
@@ -148,7 +150,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // ad setup
         adNode = childNode(withName: "ad_node")
-        // TODO
         
         // continue setup
         continueNode = childNode(withName: "continue_node")
@@ -226,10 +227,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        self.addChild(ball)
     }
     
-    func resetBall() {
+    func resetGame() {
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
         ball.physicsBody?.angularVelocity = 0
         ball.position = ballOriginPosition
+        
+        lastContactPoint = hip.position
+        lastContactMaxDistance = (hip.position - ball.position).length()
     }
     
     func onTouchGame(location: CGPoint) {
@@ -343,6 +347,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             shin.physicsBody?.applyAngularImpulse(10 * (diff - minDiff))
         }
 
+        if status != SceneStatusGame {
+            return
+        }
 
         if ball.position.x + ballRadius < self.frame.minX ||
             ball.position.x - ballRadius > self.frame.maxX {
@@ -416,7 +423,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // game
     func showGame() {
-        resetBall()
+        resetGame()
         self.scoreLabel.isHidden = false
     }
     
@@ -439,6 +446,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // add
     func showAd() {
         self.adNode.isHidden = false
+        let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
+        guard let controller = self.view?.window?.rootViewController as? GameViewController else {return}
+        
+        if isReady {
+            GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: controller)
+        } else {
+            print("add was not ready:(")
+        }
     }
     
     func hideAd() {
@@ -448,10 +463,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // continue
     func showContinue() {
         self.continueNode.isHidden = false
+        self.scoreLabel.isHidden = false
     }
     
     func hideContinue() {
         self.continueNode.isHidden = true
     }
+
+
+    // ad scene methods
+    func adStarted() {
+        watchedEnough = false
+    }
+    
+    func adWatchedEnough() {
+        watchedEnough = true
+    }
+    
+    func adClosed() {
+        if watchedEnough {
+            setStatus(statusNew: SceneStatusContinue)
+        } else {
+            scoreValue = 0
+            setStatus(statusNew: SceneStatusGame)
+        }
+    }
+    
+    
 
 }

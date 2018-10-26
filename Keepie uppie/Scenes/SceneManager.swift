@@ -8,13 +8,27 @@
 
 import Foundation
 import SpriteKit
+import GoogleMobileAds
 // singleton to navigate between scenes
 
 class SceneManagerSetupHelper {
     var view: SKView!
 }
 
+struct SceneType {
+    static let None = 0
+    static let MainMenu = 1
+    static let Game = 2
+}
+
+protocol AdScene {
+    func adStarted()
+    func adWatchedEnough()
+    func adClosed()
+}
+
 class SceneManager {
+
     
     static let instance = SceneManager()
     private static let setup = SceneManagerSetupHelper()
@@ -22,6 +36,17 @@ class SceneManager {
     class func setup(view: SKView) {
         SceneManager.setup.view = view
         
+    }
+    
+    //    var mainMenu: MainMenuScene
+    //    var game: GameScene
+    //    var workshop: WorkshopScene
+    var adScenes = [AdScene]()
+    
+    var score: Int {
+        didSet {
+            setUserScoreFromDevice(score: score)
+        }
     }
     
     private init() {
@@ -44,9 +69,11 @@ class SceneManager {
         
 //        workshop = WorkshopScene(size: GameSize)
 //        workshop.scaleMode = .aspectFill
+        
     }
     
     func presentMainMenuScene() {
+        adScenes.removeAll()
         let mainMenu = MainMenuScene(fileNamed: "MainMenuScene.sks")!
         mainMenu.scaleMode = .aspectFill
         SceneManager.setup.view.presentScene(mainMenu)
@@ -55,23 +82,35 @@ class SceneManager {
     func presentGameScene() {
         let game = GameScene(fileNamed: "GameScene.sks")!
         game.scaleMode = .aspectFill
+        adScenes.append(game)
         SceneManager.setup.view.presentScene(game)
     }
     
     func presentWorkshopScene() {
+        adScenes.removeAll()
         let workshop = WorkshopScene(size: GameSize)
         workshop.scaleMode = .aspectFill
         SceneManager.setup.view.presentScene(workshop)
     }
     
-//    var mainMenu: MainMenuScene
-//    var game: GameScene
-//    var workshop: WorkshopScene
-    
-    var score: Int {
-        didSet {
-            setUserScoreFromDevice(score: score)
+    func notifyAdStarted() {
+        for adScene in adScenes {
+            adScene.adStarted()
         }
     }
+    
+    func notifyAdWatchedEnough() {
+        for adScene in adScenes {
+            adScene.adWatchedEnough()
+        }
+    }
+    
+    func notifyAdClosed() {
+        for adScene in adScenes {
+            adScene.adClosed()
+        }
+    }
+    
+
 }
  
