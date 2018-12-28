@@ -317,7 +317,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let footPosX = foot.position.x
         let sizeWidth = self.size.width
         var zRotation = 3 * footPosX / sizeWidth
-        zRotation = pow(zRotation, 3) + 0.3
+        zRotation = pow(zRotation, 3)
         if zRotation < MinFootAngle {
             zRotation = MinFootAngle
         } else if zRotation > MaxFootAngle {
