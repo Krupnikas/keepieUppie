@@ -342,7 +342,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let headPos = head.positionInScene
         let eyePos = eye.positionInScene
         
-        print(head.zRotation)
+//        print(head.zRotation)
         
         head.zRotation = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.2
         eye.zRotation = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
