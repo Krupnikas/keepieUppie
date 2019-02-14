@@ -39,6 +39,16 @@ struct PhysicsCategory {
     static let Floor:  UInt32 = 0b100000 // 32
 }
 
+extension SKNode {
+    var positionInScene:CGPoint? {
+        if let scene = scene, let parent = parent {
+            return parent.convert(position, to:scene)
+        } else {
+            return nil
+        }
+    }
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     // game nodes
@@ -47,6 +57,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     private var hip: SKSpriteNode!
     private var shin: SKSpriteNode!
     private var foot: SKSpriteNode!
+    
+    private var head: SKSpriteNode!
+    private var eye: SKSpriteNode!
     
     private var ball: SKSpriteNode!
     private var ballOriginPosition: CGPoint!
@@ -119,6 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         player.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         player.physicsBody?.contactTestBitMask = PhysicsCategory.None
         
+        createHead()
         createLeg()
         defautTargetPos = foot.position
         targetPos = defautTargetPos
@@ -157,6 +171,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         // status
         setStatus(statusNew: SceneStatusGame)
         
+    }
+    
+    func createHead() {
+        head = childNode(withName: "//head") as? SKSpriteNode
+        //To do: physics body here
+        
+        eye = childNode(withName: "//eye") as? SKSpriteNode
     }
     
     func createLeg() {
@@ -215,6 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
 //        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 3)
 //        ball.physicsBody?.fieldBitMask = 0
         
+        
         ball.physicsBody?.restitution = 1.1
         ball.physicsBody?.linearDamping = 0.3
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
@@ -263,6 +285,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let x = max(self.minX, location.x - offsetX)
         let xWithOffset = x - (player.position.x + touchNoEffectCircle)
         let fy = 0.5 * xWithOffset + player.position.y + offsetY
+        
         targetPos = CGPoint(x: x, y: min(fy, location.y + offsetY))
     }
     
@@ -313,6 +336,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        
+        
+        let ballPos = ball.position
+        let headPos = head.positionInScene
+        let eyePos = eye.positionInScene
+        
+        print(head.zRotation)
+        
+        head.zRotation = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.2
+        eye.zRotation = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
+        
         // Called before each frame is rendered
         let footPosX = foot.position.x
         let sizeWidth = self.size.width
@@ -494,7 +528,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             setStatus(statusNew: SceneStatusGame)
         }
     }
-    
-    
-
 }
