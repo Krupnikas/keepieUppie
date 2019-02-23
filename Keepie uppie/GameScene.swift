@@ -24,7 +24,7 @@ let MinFootAngle = -π / 5 * 2
 
 let MaxFootForce = CGFloat(20000)
 
-let MaxKneeAngle = π * 5 / 6
+let MaxKneeAngle = π * 11 / 12
 let MinKneeAngle = π / 3
 let KneeAngleDelta = CGFloat(0.0) // π / 30
 
@@ -145,7 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         minContactDistance = ballRadius * MinContactMaxDistanceCoeff
 //        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        self.view?.showsPhysics = true
+//        self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
         // score setup
@@ -183,45 +183,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     func createLeg() {
         
         hip = childNode(withName: "//hip") as? SKSpriteNode
-//        hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
+        hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
+        hip.physicsBody?.affectedByGravity = false
+        hip.physicsBody?.linearDamping = 2
         hip.physicsBody?.categoryBitMask = PhysicsCategory.Hip
         hip.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         hip.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         let rotationConstraintArm = SKReachConstraints(lowerAngleLimit: CGFloat(0), upperAngleLimit: CGFloat(10))
         hip.reachConstraints = rotationConstraintArm
-//        hip.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: π / 2)))
-
+        //        hip.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: π / 2)))
+        
         shin = childNode(withName: "//shin") as? SKSpriteNode
-//        shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
+        shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
+        shin.physicsBody?.affectedByGravity = false
+        shin.physicsBody?.linearDamping = 2
         shin.physicsBody?.categoryBitMask = PhysicsCategory.Shin
         shin.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         shin.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
-//        shin.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: -0.2, upperLimit: 2 * π / 3)))
+        //        shin.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: -0.2, upperLimit: 2 * π / 3)))
         
         foot = childNode(withName: "//foot") as? SKSpriteNode
-//        foot.physicsBody = SKPhysicsBody(texture: foot.texture!, size: foot.size)
+        foot.physicsBody = SKPhysicsBody(texture: foot.texture!, size: foot.size)
+        foot.physicsBody?.affectedByGravity = false
+        foot.physicsBody?.allowsRotation = false
+        foot.physicsBody?.linearDamping = 2
+        foot.physicsBody?.angularDamping = 10
         foot.physicsBody?.categoryBitMask = PhysicsCategory.Foot
         foot.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         foot.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
-
-//        CGPoint(x: 0, y: 0)
         
+        //        CGPoint(x: 0, y: 0)
         
-//        let ass = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!,
-//                                          bodyB: hip.physicsBody!,
-//                                          anchor: hip.position)
-//        self.physicsWorld.add(ass)
-//
-//        let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
-//                                           bodyB:  shin.physicsBody!,
-//                                           anchor: shin.position)
-//        
-//        self.physicsWorld.add(knee)
-//        
-//        let ankle = SKPhysicsJointPin.joint(withBodyA: shin.physicsBody!,
-//                                            bodyB: foot.physicsBody!,
-//                                            anchor: foot.position)
-//        self.physicsWorld.add(ankle)
+        let ass = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!,
+                                          bodyB: hip.physicsBody!,
+                                          anchor: CGPoint(x: -440, y: 0))
+        self.physicsWorld.add(ass)
+        
+        let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
+                                           bodyB:  shin.physicsBody!,
+                                           anchor: CGPoint(x: -435, y: -440))
+        
+        self.physicsWorld.add(knee)
+        
+        let ankle = SKPhysicsJointPin.joint(withBodyA: shin.physicsBody!,
+                                            bodyB: foot.physicsBody!,
+                                            anchor: CGPoint(x: -429, y:-822))
+        self.physicsWorld.add(ankle)
+        
     }
     
     func createBall() {
@@ -350,7 +358,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         // Called before each frame is rendered
         let footPosX = foot.position.x
         let sizeWidth = self.size.width
-        var zRotation = 3 * footPosX / sizeWidth
+        var zRotation = 2 * footPosX / sizeWidth
         zRotation = pow(zRotation, 3)
         if zRotation < MinFootAngle {
             zRotation = MinFootAngle
@@ -373,12 +381,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let minDiff = π - MaxKneeAngle
         let diff = hz - sz
         if diff > maxDiff {
-            shin.physicsBody?.applyAngularImpulse(10 * (diff - maxDiff))
+            shin.physicsBody?.applyAngularImpulse(20 * (diff - maxDiff))
 //            if diff - maxDiff > KneeAngleDelta {
 //                shin.zRotation = hip.zRotation - maxDiff - KneeAngleDelta
 //            }
         } else if diff < minDiff {
-            shin.physicsBody?.applyAngularImpulse(10 * (diff - minDiff))
+            shin.physicsBody?.applyAngularImpulse(20 * (diff - minDiff))
         }
 
         if status != SceneStatusGame {
