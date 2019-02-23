@@ -22,6 +22,15 @@ let SceneStatusContinue = 3
 let MaxFootAngle = π / 2
 let MinFootAngle = -π / 5 * 2
 
+let MaxHeadAngle = π / 4
+let MinHeadAngle = -π / 4
+
+let MaxEyeAngle = CGFloat(0)
+let MinEyeAngle = -π / 4
+
+let releasedLinearDamping = CGFloat(5)
+let touchedLinearDamping = CGFloat(1)
+
 let MaxFootForce = CGFloat(20000)
 
 let MaxKneeAngle = π * 11 / 12
@@ -185,7 +194,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         hip = childNode(withName: "//hip") as? SKSpriteNode
         hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
         hip.physicsBody?.affectedByGravity = false
-        hip.physicsBody?.linearDamping = 2
+        hip.physicsBody?.linearDamping = 1
         hip.physicsBody?.categoryBitMask = PhysicsCategory.Hip
         hip.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         hip.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
@@ -196,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         shin = childNode(withName: "//shin") as? SKSpriteNode
         shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
         shin.physicsBody?.affectedByGravity = false
-        shin.physicsBody?.linearDamping = 2
+        shin.physicsBody?.linearDamping = 1
         shin.physicsBody?.categoryBitMask = PhysicsCategory.Shin
         shin.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         shin.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
@@ -267,6 +276,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     func onTouchGame(location: CGPoint) {
+        
+        hip.physicsBody?.linearDamping = touchedLinearDamping
+        shin.physicsBody?.linearDamping = touchedLinearDamping
+        foot.physicsBody?.linearDamping = touchedLinearDamping
+        
         let globalMinX = -self.size.width / 2
         let offsetX = CGFloat(50)
         let offsetY = CGFloat(50)
@@ -340,6 +354,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        hip.physicsBody?.linearDamping = releasedLinearDamping
+        shin.physicsBody?.linearDamping = releasedLinearDamping
+        foot.physicsBody?.linearDamping = releasedLinearDamping
         targetPos = self.defautTargetPos
     }
     
@@ -350,10 +367,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let headPos = head.positionInScene
         let eyePos = eye.positionInScene
         
-//        print(head.zRotation)
+
+        let hzr = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.1
+        if hzr > MaxHeadAngle {
+            head.zRotation = MaxHeadAngle
+        } else if hzr < MinHeadAngle {
+            head.zRotation = MinHeadAngle
+        } else {
+            head.zRotation = hzr
+        }
         
-        head.zRotation = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.2
-        eye.zRotation = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
+        let ezr = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
+        if ezr > MaxEyeAngle {
+            eye.zRotation = MaxEyeAngle
+        } else if ezr < MinEyeAngle {
+            head.zRotation = MinEyeAngle
+        } else {
+            eye.zRotation = ezr
+        }
         
         // Called before each frame is rendered
         let footPosX = foot.position.x
