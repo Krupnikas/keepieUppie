@@ -100,6 +100,6 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
     
     func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd,
                             didFailToLoadWithError error: Error) {
-        print("Reward based video ad failed to load.")
+        print("Reward based video ad failed to load: " + error.localizedDescription)
     }
 }

@@ -121,6 +121,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     // game status
     private var status = SceneStatusGame
+    private var adShown = false
     
     
     // methods
@@ -189,7 +190,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     func createHead() {
         head = childNode(withName: "//head") as? SKSpriteNode
-        //To do: physics body here
+        head.physicsBody = SKPhysicsBody(texture: head.texture!, size: head.size)
+        head.physicsBody?.affectedByGravity = false
+        head.physicsBody?.isDynamic = false
+        head.physicsBody?.allowsRotation = false
+
+        head.physicsBody?.categoryBitMask = PhysicsCategory.Body
+        head.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        head.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         
         eye = childNode(withName: "//eye") as? SKSpriteNode
     }
@@ -225,7 +233,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         foot.physicsBody?.categoryBitMask = PhysicsCategory.Foot
         foot.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         foot.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
-        
+        foot.physicsBody?.fieldBitMask = PhysicsCategory.Foot
         //        CGPoint(x: 0, y: 0)
         
         let ass = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!,
@@ -278,6 +286,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         lastContactPoint = hip.position
         lastContactMaxDistance = (hip.position - ball.position).length()
+        
+        adShown = false
     }
     
     func onTouchGame(location: CGPoint) {
@@ -528,7 +538,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     func showMenu() {
         self.menuNode.isHidden = false
         let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
-        if !isReady {
+        if !isReady || self.adShown {
             self.buttonAd.isHidden = true
         } else {
             self.buttonAd.isHidden = false
@@ -544,12 +554,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     // add
     func showAd() {
-        self.adNode.isHidden = false
+        adNode.isHidden = false
         let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
         guard let controller = self.view?.window?.rootViewController as? GameViewController else {return}
         
         if isReady {
             GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: controller)
+            adShown = true
         } else {
             print("add was not ready:(")
         }
