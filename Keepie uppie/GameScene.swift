@@ -28,10 +28,14 @@ let MinHeadAngle = -π / 4
 let MaxEyeAngle = CGFloat(0)
 let MinEyeAngle = -π / 4
 
+let DefaultHeadAngle = CGFloat(-π / 8)
+let DefaultEyeAngle = CGFloat( -π / 6)
+
 let releasedLinearDamping = CGFloat(5)
-let touchedLinearDamping = CGFloat(1)
+let touchedLinearDamping = CGFloat(7)
 
 let MaxFootForce = CGFloat(20000)
+let FootForceMultiplyer = CGFloat(10)
 
 let MaxKneeAngle = π * 11 / 12
 let MinKneeAngle = π / 3
@@ -97,7 +101,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     // movement
     private var targetPos : CGPoint?
-    private var defautTargetPos : CGPoint?
+    var defautTargetPos = CGPoint()
     private var touchNoEffectCircle: CGFloat!
     
     private var minX : CGFloat!
@@ -143,14 +147,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         createHead()
         createLeg()
-        defautTargetPos = foot.position
-        targetPos = defautTargetPos
+        
         touchNoEffectCircle = hip.size.height * TouchNoEffectSizeCoeff
         
         self.minX = player.position.x + touchNoEffectCircle
         self.maxY = player.position.y // size.height / 2
         
         createBall()
+        self.defautTargetPos = CGPoint(x: (ball.positionInScene?.x)!, y: -self.size.height * 4 / 12)
+        targetPos = self.defautTargetPos
         
         minContactDistance = ballRadius * MinContactMaxDistanceCoeff
 //        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
@@ -357,34 +362,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         hip.physicsBody?.linearDamping = releasedLinearDamping
         shin.physicsBody?.linearDamping = releasedLinearDamping
         foot.physicsBody?.linearDamping = releasedLinearDamping
-        targetPos = self.defautTargetPos
+        targetPos = defautTargetPos
     }
     
     override func update(_ currentTime: TimeInterval) {
-        
-        
-        let ballPos = ball.position
-        let headPos = head.positionInScene
-        let eyePos = eye.positionInScene
-        
-
-        let hzr = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.1
-        if hzr > MaxHeadAngle {
-            head.zRotation = MaxHeadAngle
-        } else if hzr < MinHeadAngle {
-            head.zRotation = MinHeadAngle
-        } else {
-            head.zRotation = hzr
-        }
-        
-        let ezr = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
-        if ezr > MaxEyeAngle {
-            eye.zRotation = MaxEyeAngle
-        } else if ezr < MinEyeAngle {
-            head.zRotation = MinEyeAngle
-        } else {
-            eye.zRotation = ezr
-        }
         
         // Called before each frame is rendered
         let footPosX = foot.position.x
@@ -399,12 +380,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         foot.zRotation = zRotation
 
         // 100 works bad for iphone X
-        var force = CGVector(dx: 100 * (targetPos!.x - (foot?.position.x)!),
-                            dy: 100 * (targetPos!.y - (foot?.position.y)!))
+        var force = CGVector(dx: FootForceMultiplyer * (targetPos!.x - (foot?.position.x)!),
+                            dy: FootForceMultiplyer * (targetPos!.y - (foot?.position.y)!))
         if force.length() > MaxFootForce {
             force = force.normalized() * MaxFootForce
         }
-        foot.physicsBody?.applyForce(force)
+        if targetPos == defautTargetPos
+        {
+            foot.physicsBody?.applyForce(force)
+        }
+        else
+        {
+            foot.physicsBody?.velocity = force
+        }
 
         let hz = hip.zRotation
         let sz = shin.zRotation
@@ -423,10 +411,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         if status != SceneStatusGame {
             return
         }
+        
+        let ballPos = ball.position
+        let headPos = head.positionInScene
+        let eyePos = eye.positionInScene
+        
+        
+        let hzr = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.1
+        if hzr > MaxHeadAngle {
+            head.zRotation = MaxHeadAngle
+        } else if hzr < MinHeadAngle {
+            head.zRotation = MinHeadAngle
+        } else {
+            head.zRotation = hzr
+        }
+        
+        let ezr = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
+        if ezr > MaxEyeAngle {
+            eye.zRotation = MaxEyeAngle
+        } else if ezr < MinEyeAngle {
+            head.zRotation = MinEyeAngle
+        } else {
+            eye.zRotation = ezr
+        }
 
-        if ball.position.x + ballRadius < self.frame.minX ||
+        if ball.position.x < (head.positionInScene?.x)! ||   // LOOSE
             ball.position.x - ballRadius > self.frame.maxX {
             self.setStatus(statusNew: SceneStatusMenu)
+            targetPos = defautTargetPos
+            
+            let headAction = SKAction .rotate(toAngle: DefaultHeadAngle, duration: 1)
+            headAction.timingMode = .easeInEaseOut
+            head.run(headAction)
+            
+            let eyeAction = SKAction .rotate(toAngle: DefaultEyeAngle, duration: 0.8)
+            eyeAction.timingMode = .easeInEaseOut
+            eye.run(eyeAction)
         }
 
         let distance = (ball.position - lastContactPoint).length()
