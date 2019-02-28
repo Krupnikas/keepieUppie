@@ -159,8 +159,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         targetPos = self.defautTargetPos
         
         minContactDistance = ballRadius * MinContactMaxDistanceCoeff
-//        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-//        self.view?.showsPhysics = true
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+        self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
         // score setup
@@ -192,12 +192,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         head = childNode(withName: "//head") as? SKSpriteNode
         head.physicsBody = SKPhysicsBody(texture: head.texture!, size: head.size)
         head.physicsBody?.affectedByGravity = false
-        head.physicsBody?.isDynamic = false
-        head.physicsBody?.allowsRotation = false
+        head.physicsBody?.isDynamic = true
+        head.physicsBody?.allowsRotation = true
 
         head.physicsBody?.categoryBitMask = PhysicsCategory.Body
         head.physicsBody?.collisionBitMask = PhysicsCategory.Ball
         head.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+        
+        let neck = SKPhysicsJointPin.joint(withBodyA: player.physicsBody!,
+                                          bodyB: head.physicsBody!,
+                                          anchor: CGPoint(x: -370, y: 837))
+        self.physicsWorld.add(neck)
         
         eye = childNode(withName: "//eye") as? SKSpriteNode
     }
@@ -231,7 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         foot.physicsBody?.linearDamping = 2
         foot.physicsBody?.angularDamping = 10
         foot.physicsBody?.categoryBitMask = PhysicsCategory.Foot
-        foot.physicsBody?.collisionBitMask = PhysicsCategory.Ball
+        foot.physicsBody?.collisionBitMask = PhysicsCategory.Ball // | PhysicsCategory.Floor
         foot.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         foot.physicsBody?.fieldBitMask = PhysicsCategory.Foot
         //        CGPoint(x: 0, y: 0)
@@ -252,6 +257,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
                                             anchor: CGPoint(x: -429, y:-822))
         self.physicsWorld.add(ankle)
         
+        // Measured. Depend on default pos. DON'T MOVE THE BALL!! Or change this values
+        hip.position = CGPoint(x: -311.99462890625, y: -182.842864990234)
+        hip.zRotation = 0.787243187427521
+        shin.position = CGPoint(x: -44.5474967956543, y: -489.776184082031)
+        shin.zRotation = 0.529626190662384
+        foot.position = CGPoint(x: 216.634857177734, y: -731.635803222656)
+        foot.zRotation = 0.0424571447074413
     }
     
     func createBall() {
@@ -299,8 +311,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let globalMinX = -self.size.width / 2
         let offsetX = CGFloat(50)
         let offsetY = CGFloat(50)
+        
         if location.y < maxY {
-            var locationActual = CGPoint(x: max(globalMinX, location.x - offsetX), y: min(self.maxY, location.y + offsetX))
+            var locationActual = CGPoint(x: max(globalMinX, location.x - offsetX),
+                                         y: min(self.maxY, location.y + offsetX))
             let vect = locationActual - player.position
             if vect.length() <= touchNoEffectCircle {
                 locationActual = player.position + vect.normalized() * touchNoEffectCircle
@@ -376,6 +390,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+
+//        print("Hip:", hip.position, hip.zRotation)
+//        print("Shin:", shin.position, shin.zRotation)
+//        print("Foot:", foot.position, foot.zRotation)
+//        print(head.position)
         
         // Called before each frame is rendered
         let footPosX = foot.position.x
@@ -426,21 +445,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let headPos = head.positionInScene
         let eyePos = eye.positionInScene
         
-        
         let hzr = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.1
+        
+        var targerHeadAngle = hzr
+        
         if hzr > MaxHeadAngle {
-            head.zRotation = MaxHeadAngle
+            targerHeadAngle = MaxHeadAngle
         } else if hzr < MinHeadAngle {
-            head.zRotation = MinHeadAngle
-        } else {
-            head.zRotation = hzr
+            targerHeadAngle = MinHeadAngle
+        }
+        
+        if head.zRotation != targerHeadAngle {
+            head.physicsBody?.angularVelocity = 10 * (targerHeadAngle - head.zRotation)
         }
         
         let ezr = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
         if ezr > MaxEyeAngle {
             eye.zRotation = MaxEyeAngle
         } else if ezr < MinEyeAngle {
-            head.zRotation = MinEyeAngle
+            eye.zRotation = MinEyeAngle
         } else {
             eye.zRotation = ezr
         }
