@@ -159,8 +159,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         targetPos = self.defautTargetPos
         
         minContactDistance = ballRadius * MinContactMaxDistanceCoeff
-        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        self.view?.showsPhysics = true
+//        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+//        self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
         // score setup
@@ -299,6 +299,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         lastContactPoint = hip.position
         lastContactMaxDistance = (hip.position - ball.position).length()
         
+        print("Game reseted")
         adShown = false
     }
     
@@ -356,6 +357,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         case SceneStatusContinue:
             if buttonContinue.contains(location) {
                 setStatus(statusNew: SceneStatusGame)
+                adShown = true
             }
         default:
             return
@@ -436,10 +438,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         } else if diff < minDiff {
             shin.physicsBody?.applyAngularImpulse(20 * (diff - minDiff))
         }
-
-        if status != SceneStatusGame {
-            return
-        }
         
         let ballPos = ball.position
         let headPos = head.positionInScene
@@ -455,6 +453,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             targerHeadAngle = MinHeadAngle
         }
         
+        if self.status != SceneStatusGame {
+            targerHeadAngle = DefaultHeadAngle
+            head.physicsBody?.angularVelocity = 1 * (targerHeadAngle - head.zRotation)
+            return
+        }
+        
         if head.zRotation != targerHeadAngle {
             head.physicsBody?.angularVelocity = 10 * (targerHeadAngle - head.zRotation)
         }
@@ -468,24 +472,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             eye.zRotation = ezr
         }
 
-        if ball.position.x < (head.positionInScene?.x)! ||   // LOOSE
+        if ball.position.x < (head.positionInScene?.x)! ||
             ball.position.x - ballRadius > self.frame.maxX {
-            self.setStatus(statusNew: SceneStatusMenu)
-            targetPos = defautTargetPos
-            
-            let headAction = SKAction .rotate(toAngle: DefaultHeadAngle, duration: 1)
-            headAction.timingMode = .easeInEaseOut
-            head.run(headAction)
-            
-            let eyeAction = SKAction .rotate(toAngle: DefaultEyeAngle, duration: 0.8)
-            eyeAction.timingMode = .easeInEaseOut
-            eye.run(eyeAction)
+            loose();
         }
 
         let distance = (ball.position - lastContactPoint).length()
         if distance > lastContactMaxDistance {
             lastContactMaxDistance = distance
         }
+    }
+    
+    func loose() {
+        print("Looser!")
+        self.setStatus(statusNew: SceneStatusMenu)
+        
+        let zero = CGVector(dx: 0, dy: 0)
+        hip.physicsBody?.velocity = zero
+        shin.physicsBody?.velocity = zero
+        foot.physicsBody?.velocity = zero
+        
+        targetPos = defautTargetPos
+        
+        head.physicsBody?.angularVelocity = 0
+
+        let eyeAction = SKAction .rotate(toAngle: DefaultEyeAngle, duration: 0.8)
+        eyeAction.timingMode = .easeInEaseOut
+        eye.run(eyeAction)
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -496,7 +509,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         if collision == PhysicsCategory.Ball | PhysicsCategory.Floor {
-            setStatus(statusNew: SceneStatusMenu)
+            loose()
             return
         }
         
@@ -512,7 +525,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             return
         }
     
-        
         scoreValue += 1
     }
     
@@ -561,8 +573,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     func showMenu() {
         self.menuNode.isHidden = false
         let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
+        print("Ad shown: ", self.adShown)
         if !isReady || self.adShown {
             self.buttonAd.isHidden = true
+            print("hidden")
         } else {
             self.buttonAd.isHidden = false
         }
@@ -582,8 +596,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         guard let controller = self.view?.window?.rootViewController as? GameViewController else {return}
         
         if isReady {
+            print("going to show ad")
             GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: controller)
-            adShown = true
+            print("ad shown")
+            self.adShown = true
         } else {
             print("add was not ready:(")
         }
@@ -611,6 +627,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     func adWatchedEnough() {
         watchedEnough = true
+        adShown = true
     }
     
     func adClosed() {
@@ -619,6 +636,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         } else {
             scoreValue = 0
             setStatus(statusNew: SceneStatusGame)
+            adShown = true
         }
     }
 }
