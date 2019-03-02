@@ -345,20 +345,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         switch status {
         case SceneStatusGame:
             onTouchGame(location: location)
-        case SceneStatusMenu:
-            if buttonMenu.contains(location) {
-                SceneManager.instance.presentMainMenuScene()
-            } else if buttonRestart.contains(location) {
-                scoreValue = 0
-                setStatus(statusNew: SceneStatusGame)
-            } else if buttonAd.contains(location) {
-                setStatus(statusNew: SceneStatusAd)
-            }
-        case SceneStatusContinue:
-            if buttonContinue.contains(location) {
-                setStatus(statusNew: SceneStatusGame)
-                adShown = true
-            }
         default:
             return
         }
@@ -385,10 +371,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        hip.physicsBody?.linearDamping = releasedLinearDamping
-        shin.physicsBody?.linearDamping = releasedLinearDamping
-        foot.physicsBody?.linearDamping = releasedLinearDamping
-        targetPos = defautTargetPos
+        let location = touches.first?.location(in: self)
+        switch status {
+        case SceneStatusGame:
+            hip.physicsBody?.linearDamping = releasedLinearDamping
+            shin.physicsBody?.linearDamping = releasedLinearDamping
+            foot.physicsBody?.linearDamping = releasedLinearDamping
+            targetPos = defautTargetPos
+        case SceneStatusMenu:
+            if buttonMenu.contains(location!) {
+                SceneManager.instance.presentMainMenuScene()
+            } else if buttonRestart.contains(location!) {
+                scoreValue = 0
+                setStatus(statusNew: SceneStatusGame)
+            } else if buttonAd.contains(location!) {
+                setStatus(statusNew: SceneStatusAd)
+            }
+        case SceneStatusContinue:
+            if buttonContinue.contains(location!) {
+                setStatus(statusNew: SceneStatusGame)
+                adShown = true
+            }
+        default:
+            return
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
