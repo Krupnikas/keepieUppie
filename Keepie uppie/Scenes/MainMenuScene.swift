@@ -15,6 +15,9 @@ class MainMenuScene: SKScene {
     private var background: SKSpriteNode!
     private var buttonPlay: SKSpriteNode!
     private var labelScore: SKLabelNode!
+    
+    let mainThemePlaying = SKAction.repeatForever(SKAction.playSoundFileNamed("sounds/main_theme", waitForCompletion: true))
+
 //    override init(size: CGSize) {
 //
 //
@@ -33,9 +36,11 @@ class MainMenuScene: SKScene {
         buttonPlay = childNode(withName: "//button_play") as? SKSpriteNode
         labelScore = childNode(withName: "//label_score") as? SKLabelNode
         labelScore.text = String(SceneManager.instance.score)
+        self.run(mainThemePlaying)
     }
 
     func onPlayClicked() {
+        self.removeAllActions()
         SceneManager.instance.presentGameScene()
     }
     

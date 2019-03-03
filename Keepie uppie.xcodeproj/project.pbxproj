@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A50496A3222C0DE100157780 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = A50496A2222C0DE100157780 /* sounds */; };
 		A5386EE32136A35200C86A1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE22136A35200C86A1D /* AppDelegate.swift */; };
 		A5386EE92136A35200C86A1D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE82136A35200C86A1D /* GameScene.swift */; };
 		A5386EEB2136A35200C86A1D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EEA2136A35200C86A1D /* GameViewController.swift */; };
@@ -48,6 +49,7 @@
 		0A0698F74201E68FEBFEA31F /* Pods-Keepie uppieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keepie uppieUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Keepie uppieUITests/Pods-Keepie uppieUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2342E1A294B727959435C300 /* Pods-Keepie uppie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keepie uppie.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keepie uppie/Pods-Keepie uppie.release.xcconfig"; sourceTree = "<group>"; };
 		4132E600468E2776E03F202A /* Pods-Keepie uppieUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keepie uppieUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keepie uppieUITests/Pods-Keepie uppieUITests.release.xcconfig"; sourceTree = "<group>"; };
+		A50496A2222C0DE100157780 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		A5386EDF2136A35200C86A1D /* Keepie uppie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Keepie uppie.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5386EE22136A35200C86A1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5386EE82136A35200C86A1D /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = ../GameScene.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		A5386EE12136A35200C86A1D /* Keepie uppie */ = {
 			isa = PBXGroup;
 			children = (
+				A50496A2222C0DE100157780 /* sounds */,
 				D4165016217F787200F93ED6 /* Game */,
 				D4165003217F2AFD00F93ED6 /* Scenes */,
 				A5386EE22136A35200C86A1D /* AppDelegate.swift */,
@@ -309,6 +312,7 @@
 			files = (
 				D4165013217F343800F93ED6 /* MainMenuScene.sks in Resources */,
 				A5386EEE2136A35200C86A1D /* Main.storyboard in Resources */,
+				A50496A3222C0DE100157780 /* sounds in Resources */,
 				A5386EF02136A35300C86A1D /* Assets.xcassets in Resources */,
 				D4165015217F722600F93ED6 /* GameScene.sks in Resources */,
 				A5386EF32136A35300C86A1D /* LaunchScreen.storyboard in Resources */,

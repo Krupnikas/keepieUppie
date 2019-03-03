@@ -123,7 +123,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     private var status = SceneStatusGame
     private var adShown = false
     
+    //sounds
+    let kickSounds = [
+        SKAction.playSoundFileNamed("sounds/kick0", waitForCompletion: false),
+        SKAction.playSoundFileNamed("sounds/kick1", waitForCompletion: false)]
     
+    let whistleSound = SKAction.playSoundFileNamed("sounds/whistle", waitForCompletion: false)
+        
     // methods
     override func didMove(to view: SKView) {
         // general setup
@@ -292,6 +298,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     func resetGame() {
+        
+        self.run(whistleSound)
+        
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
         ball.physicsBody?.angularVelocity = 0
         ball.position = ballOriginPosition
@@ -508,6 +517,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        
+        let soundIndex = Int(arc4random_uniform(UInt32(kickSounds.count)))
+        self.run(kickSounds[soundIndex])
         
         if status != SceneStatusGame {
             return
