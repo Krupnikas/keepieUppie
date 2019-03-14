@@ -91,6 +91,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     private var buttonRestart: SKSpriteNode!
     private var buttonAd: SKSpriteNode!
     
+    private var activeButton: SKNode!
+    
     // ad nodes
     private var adNode: SKNode!
     private var watchedEnough = false
@@ -354,6 +356,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         switch status {
         case SceneStatusGame:
             onTouchGame(location: location)
+        case SceneStatusMenu:
+            if buttonMenu.contains(location) {
+                activeButton = buttonMenu
+            } else if buttonRestart.contains(location) {
+                activeButton = buttonRestart
+            } else if buttonAd.contains(location) {
+                activeButton = buttonAd
+            }
+        case SceneStatusContinue:
+            if buttonContinue.contains(location) {
+                activeButton = buttonContinue
+            }
         default:
             return
         }
@@ -388,22 +402,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             foot.physicsBody?.linearDamping = releasedLinearDamping
             targetPos = defautTargetPos
         case SceneStatusMenu:
-            if buttonMenu.contains(location!) {
+            if buttonMenu.contains(location!) && activeButton == buttonMenu {
                 SceneManager.instance.presentMainMenuScene()
-            } else if buttonRestart.contains(location!) {
+            } else if buttonRestart.contains(location!) && activeButton == buttonRestart{
                 scoreValue = 0
                 setStatus(statusNew: SceneStatusGame)
-            } else if buttonAd.contains(location!) {
+            } else if buttonAd.contains(location!) && activeButton == buttonAd {
                 setStatus(statusNew: SceneStatusAd)
             }
         case SceneStatusContinue:
-            if buttonContinue.contains(location!) {
+            if buttonContinue.contains(location!) && activeButton == buttonContinue {
                 setStatus(statusNew: SceneStatusGame)
                 adShown = true
             }
         default:
             return
         }
+        activeButton = nil 
     }
     
     override func update(_ currentTime: TimeInterval) {
