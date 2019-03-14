@@ -445,13 +445,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         let maxDiff = π - MinKneeAngle
         let minDiff = π - MaxKneeAngle
         let diff = hz - sz
+//        print(diff)
         if diff > maxDiff {
             shin.physicsBody?.applyAngularImpulse(20 * (diff - maxDiff))
+//            hip.physicsBody?.applyAngularImpulse(-30 * (diff - maxDiff))
 //            if diff - maxDiff > KneeAngleDelta {
 //                shin.zRotation = hip.zRotation - maxDiff - KneeAngleDelta
 //            }
         } else if diff < minDiff {
             shin.physicsBody?.applyAngularImpulse(20 * (diff - minDiff))
+//            hip.physicsBody?.applyAngularImpulse(-30 * (diff - maxDiff))
+        }
+        
+        if diff < 0 {
+            shin.physicsBody?.angularVelocity = 60 * (diff)
         }
         
         let ballPos = ball.position
