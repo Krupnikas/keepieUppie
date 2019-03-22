@@ -41,6 +41,24 @@ let MaxKneeAngle = π * 11 / 12
 let MinKneeAngle = π / 3
 let KneeAngleDelta = CGFloat(0.0) // π / 30
 
+let pulseScaleDiff = 1.2
+let pulseScaleDuration = 1
+
+//animations
+let upscale = SKAction.scale(by: CGFloat(pulseScaleDiff), duration: TimeInterval(pulseScaleDuration))
+let downscale = SKAction.scale(by: 1/CGFloat(pulseScaleDiff), duration: TimeInterval(pulseScaleDuration))
+let pulse = SKAction.repeatForever(SKAction.sequence([upscale, downscale]))
+
+let scoreScaleFactor = 3
+let scoreScaleDuration = 1 // seconds
+let scoreOffset = 400
+let scoreUpscale = SKAction.scale(by: CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleDuration))
+let scoreDownscale = SKAction.scale(by: 1/CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleDuration))
+let scoreMoveToMenuPos = SKAction.move(by: CGVector(dx: 0, dy: -scoreOffset), duration: TimeInterval(scoreScaleDuration))
+let scoreMoveToGamePos = SKAction.move(by: CGVector(dx: 0, dy: scoreOffset), duration: TimeInterval(scoreScaleDuration))
+//let scoreColorToRed = SKAction.colorize(with: UIColor(red: CGFloat(1), green: CGFloat(0), blue: CGFloat(0), alpha: CGFloat(0)), colorBlendFactor: CGFloat(1), duration: TimeInterval(scoreScaleDuration))
+//    duration: scoreScaleDuration)
+
 struct PhysicsCategory {
     static let None:   UInt32 = 0
     static let Body:   UInt32 = 0b1      // 1
@@ -130,12 +148,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         SKAction.playSoundFileNamed("sounds/kick0", waitForCompletion: false),
         SKAction.playSoundFileNamed("sounds/kick1", waitForCompletion: false)]
     
-    let whistleSound = SKAction.playSoundFileNamed("sounds/whistle", waitForCompletion: false)
+    let whistleSound = SKAction.group([
+        SKAction.playSoundFileNamed("sounds/whistle", waitForCompletion: false),
+        SKAction.changeVolume(to: 0.3, duration: 0.3)])
         
     // methods
     override func didMove(to view: SKView) {
         // general setup
         physicsWorld.contactDelegate = self
+        
+        //animations
+        upscale.timingMode = .easeInEaseOut
+        downscale.timingMode = .easeInEaseOut
+        scoreUpscale.timingMode = .easeInEaseOut
+        scoreDownscale.timingMode = .easeInEaseOut
+        scoreMoveToMenuPos.timingMode = .easeInEaseOut
+        scoreMoveToGamePos.timingMode = .easeInEaseOut
         
         // game setup
         gameNode = childNode(withName: "//game_node")
@@ -423,6 +451,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     override func update(_ currentTime: TimeInterval) {
 
+//        print(buttonAd.xScale)
 //        print("Hip:", hip.position, hip.zRotation)
 //        print("Shin:", shin.position, shin.zRotation)
 //        print("Foot:", foot.position, foot.zRotation)
@@ -488,6 +517,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             targerHeadAngle = MaxHeadAngle
         } else if hzr < MinHeadAngle {
             targerHeadAngle = MinHeadAngle
+        }
+        
+        if (ball.position.x < self.frame.minX ||  // Possible wrong state fix
+            ball.position.x - ballRadius > self.frame.maxX) && buttonRestart.isHidden {
+            loose();
         }
         
         if self.status != SceneStatusGame {
@@ -602,15 +636,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     // game
     func showGame() {
         resetGame()
-        self.scoreLabel.isHidden = false
+//        self.scoreLabel.isHidden = false
     }
     
     func hideGame() {
-        self.scoreLabel.isHidden = true
+//        self.scoreLabel.isHidden = true
     }
     
     // menu
     func showMenu() {
+        self.scoreLabel.run(scoreUpscale)
+        self.scoreLabel.run(scoreMoveToMenuPos)
+        buttonAd.run(pulse)
+        
         self.menuNode.isHidden = false
         let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
         print("Ad shown: ", self.adShown)
@@ -626,6 +664,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     func hideMenu() {
+        self.scoreLabel.run(scoreDownscale)
+        self.scoreLabel.run(scoreMoveToGamePos)
+        buttonAd.removeAllActions()
         self.menuNode.isHidden = true
     }
     
