@@ -43,6 +43,13 @@ let KneeAngleDelta = CGFloat(0.0) // π / 30
 
 let menuButtonOffset = CGFloat(30)
 
+//colors
+let defaultScoreLabelColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+let newRecordScoreLabelColor = UIColor(red: CGFloat(236)/255,
+                                       green: CGFloat(78)/255,
+                                       blue: CGFloat(39)/255,
+                                       alpha: CGFloat(1))
+
 //animations
 let pulseScaleDiff = 1.2
 let pulseScaleDuration = 1
@@ -59,8 +66,8 @@ let scoreUpscale = SKAction.scale(by: CGFloat(scoreScaleFactor), duration: TimeI
 let scoreDownscale = SKAction.scale(by: 1/CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleDuration))
 let scoreMoveToMenuPos = SKAction.move(by: CGVector(dx: 0, dy: -scoreOffset), duration: TimeInterval(scoreScaleDuration))
 let scoreMoveToGamePos = SKAction.move(by: CGVector(dx: 0, dy: scoreOffset), duration: TimeInterval(scoreScaleDuration))
-//let scoreColorToRed = SKAction.colorize(with: UIColor(red: CGFloat(1), green: CGFloat(0), blue: CGFloat(0), alpha: CGFloat(0)), colorBlendFactor: CGFloat(1), duration: TimeInterval(scoreScaleDuration))
-//    duration: scoreScaleDuration)
+let coloriseScoreLabel = SKAction.colorize(with: newRecordScoreLabelColor, colorBlendFactor: CGFloat(1), duration: TimeInterval(0.1))
+let decoloriseScoreLabel = SKAction.colorize(with: defaultScoreLabelColor, colorBlendFactor: CGFloat(1), duration: TimeInterval(scoreScaleDuration))
 
 let hidingAction = SKAction.scale(to: 0, duration: 1)
 let showingAction = SKAction.scale(to: 2, duration: 1)
@@ -212,6 +219,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         hidingAction.timingMode = .easeInEaseOut
         showingAction.timingMode = .easeInEaseOut
         showingActionHalf.timingMode = .easeInEaseOut
+        coloriseScoreLabel.timingMode = .easeInEaseOut
+        decoloriseScoreLabel.timingMode = .easeInEaseOut
         
         // game setup
         gameNode = childNode(withName: "//game_node")
@@ -658,6 +667,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         }
     
         scoreValue += 1
+        if (scoreValue > SceneManager.instance.score) {
+            scoreLabel.run(coloriseScoreLabel)
+            print("New record!")
+//            scoreLabel.fontColor = newRecordScoreLabelColor
+        }
     }
     
     // scene status   
@@ -704,8 +718,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     // menu
     func showMenu() {
         
-        self.scoreLabel.run(scoreUpscale)
-        self.scoreLabel.run(scoreMoveToMenuPos)
+        scoreLabel.run(scoreUpscale)
+        scoreLabel.run(scoreMoveToMenuPos)
+//        scoreLabel.run(coloriseScoreLabel)
         
         buttonAd.setScale(1)
         
@@ -736,8 +751,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     func hideMenu() {
-        self.scoreLabel.run(scoreDownscale)
-        self.scoreLabel.run(scoreMoveToGamePos)
+        scoreLabel.run(scoreDownscale)
+        scoreLabel.run(scoreMoveToGamePos)
+        if (scoreValue == 0) {
+            scoreLabel.run(decoloriseScoreLabel)
+        }
+//        scoreLabel.fontColor = defaultScoreLabelColor
         buttonRestart.run(hidingAction)
         buttonAd.removeAllActions()
         buttonAd.run(hidingAction)
@@ -792,6 +811,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             setStatus(statusNew: SceneStatusContinue)
         } else {
             scoreValue = 0
+            scoreLabel.fontColor = defaultScoreLabelColor
             setStatus(statusNew: SceneStatusGame)
             adShown = true
         }
