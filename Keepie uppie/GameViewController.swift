@@ -11,6 +11,9 @@ import SpriteKit
 import GameplayKit
 import GoogleMobileAds
 
+let testAdUnitId = "ca-app-pub-3940256099942544/1712485313"
+let prodAdUnitId = "ca-app-pub-4718486799866350/3586090329"
+
 class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
 
     private var rewardBasedVideo: GADRewardBasedVideoAd!
@@ -21,9 +24,13 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
         
         rewardBasedVideo = GADRewardBasedVideoAd.sharedInstance()
         rewardBasedVideo?.delegate = self
+        #if DEBUG
         let request = GADRequest()
         request.testDevices = [ "fc7552e962ddcbe16ff92cfaadfb1fa5" ] // Sample device ID
-        rewardBasedVideo.load(request, withAdUnitID: "ca-app-pub-4718486799866350/3586090329")
+        rewardBasedVideo.load(request, withAdUnitID: testAdUnitId)
+        #else
+        rewardBasedVideo.load(request, withAdUnitID: prodAdUnitId)
+        #endif
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -91,7 +98,13 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
         print("Reward based video ad is closed.")
         SceneManager.instance.notifyAdClosed()
-        rewardBasedVideoAd.load(GADRequest(), withAdUnitID: "ca-app-pub-3940256099942544/1712485313")
+        #if DEBUG
+        let request = GADRequest()
+        request.testDevices = [ "fc7552e962ddcbe16ff92cfaadfb1fa5" ] // Sample device ID
+        rewardBasedVideo.load(request, withAdUnitID: testAdUnitId)
+        #else
+        rewardBasedVideo.load(GADRequest(), withAdUnitID: prodAdUnitId)
+        #endif
     }
     
     func rewardBasedVideoAdWillLeaveApplication(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {

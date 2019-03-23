@@ -41,10 +41,11 @@ let MaxKneeAngle = π * 11 / 12
 let MinKneeAngle = π / 3
 let KneeAngleDelta = CGFloat(0.0) // π / 30
 
-let pulseScaleDiff = 1.2
-let pulseScaleDuration = 1
+let menuButtonOffset = CGFloat(30)
 
 //animations
+let pulseScaleDiff = 1.2
+let pulseScaleDuration = 1
 let upscale = SKAction.scale(by: CGFloat(pulseScaleDiff), duration: TimeInterval(pulseScaleDuration))
 let downscale = SKAction.scale(by: 1/CGFloat(pulseScaleDiff), duration: TimeInterval(pulseScaleDuration))
 let pulse = SKAction.repeatForever(SKAction.sequence([upscale, downscale]))
@@ -78,6 +79,44 @@ extension SKNode {
             return nil
         }
     }
+}
+
+func getVisibleScreen(sw: Float, sh: Float, viewWidth: Float, viewHeight: Float) -> CGRect {
+    var x: Float = 0
+    var y: Float = 0
+    
+    var sceneWidth = sw
+    var sceneHeight = sh
+    
+    let deviceAspectRatio = viewWidth/viewHeight
+    let sceneAspectRatio = sceneWidth/sceneHeight
+    
+    //If the the device's aspect ratio is smaller than the aspect ratio of the preset scene dimensions, then that would mean that the visible width will need to be calculated
+    //as the scene's height has been scaled to match the height of the device's screen. To keep the aspect ratio of the scene this will mean that the width of the scene will extend
+    //out from what is visible.
+    //The opposite will happen in the device's aspect ratio is larger.
+    if deviceAspectRatio < sceneAspectRatio {
+        let newSceneWidth: Float = (sceneWidth * viewHeight) / sceneHeight
+        let sceneWidthDifference: Float = (newSceneWidth - viewWidth)/2
+        let diffPercentageWidth: Float = sceneWidthDifference / (newSceneWidth)
+        
+        //Increase the x-offset by what isn't visible from the lrft of the scene
+        x = diffPercentageWidth * sceneWidth
+        //Multipled by 2 because the diffPercentageHeight is only accounts for one side(e.g right or left) not both
+        sceneWidth = sceneWidth - (diffPercentageWidth * 2 * sceneWidth)
+    } else {
+        let newSceneHeight: Float = (sceneHeight * viewWidth) / sceneWidth
+        let sceneHeightDifference: Float = (newSceneHeight - viewHeight)/2
+        let diffPercentageHeight: Float = fabs(sceneHeightDifference / (newSceneHeight))
+        
+        //Increase the y-offset by what isn't visible from the bottom of the scene
+        y = diffPercentageHeight * sceneHeight
+        //Multipled by 2 because the diffPercentageHeight is only accounts for one side(e.g top or bottom) not both
+        sceneHeight = sceneHeight - (diffPercentageHeight * 2 * sceneHeight)
+    }
+    
+    let visibleScreenOffset = CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(sceneWidth), height: CGFloat(sceneHeight))
+    return visibleScreenOffset
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
@@ -211,6 +250,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         buttonMenu = childNode(withName: "//button_menu") as? SKSpriteNode
         buttonRestart = childNode(withName: "//button_restart") as? SKSpriteNode
         buttonAd = childNode(withName: "//button_ad") as? SKSpriteNode
+        
+        buttonMenu.position = CGPoint(x: self.frame.minX + buttonMenu.size.width / 2 + menuButtonOffset, // aligning bottom left
+                                      y: -getVisibleScreen(
+                                        sw: Float(self.scene!.frame.width),
+                                        sh: Float(self.scene!.frame.height),
+                                        viewWidth: Float(self.view!.frame.width),
+                                        viewHeight: Float(self.view!.frame.height)).height / 2
+                                        + buttonMenu.size.height/2 + menuButtonOffset)
         
         // ad setup
         adNode = childNode(withName: "ad_node")
@@ -645,8 +692,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     // menu
     func showMenu() {
+        
         self.scoreLabel.run(scoreUpscale)
         self.scoreLabel.run(scoreMoveToMenuPos)
+        
+        buttonAd.setScale(1)
         buttonAd.run(pulse)
         
         self.menuNode.isHidden = false
@@ -667,6 +717,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         self.scoreLabel.run(scoreDownscale)
         self.scoreLabel.run(scoreMoveToGamePos)
         buttonAd.removeAllActions()
+        buttonAd.setScale(0)
         self.menuNode.isHidden = true
     }
     
