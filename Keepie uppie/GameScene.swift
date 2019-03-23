@@ -46,9 +46,11 @@ let menuButtonOffset = CGFloat(30)
 //animations
 let pulseScaleDiff = 1.2
 let pulseScaleDuration = 1
-let upscale = SKAction.scale(by: CGFloat(pulseScaleDiff), duration: TimeInterval(pulseScaleDuration))
-let downscale = SKAction.scale(by: 1/CGFloat(pulseScaleDiff), duration: TimeInterval(pulseScaleDuration))
+let upscale = SKAction.scale(to: CGFloat(pulseScaleDiff), duration: TimeInterval(pulseScaleDuration))
+let downscale = SKAction.scale(to: 1, duration: TimeInterval(pulseScaleDuration))
 let pulse = SKAction.repeatForever(SKAction.sequence([upscale, downscale]))
+
+let waitAbit = SKAction.wait(forDuration: TimeInterval(2.5))  // seconds
 
 let scoreScaleFactor = 3
 let scoreScaleDuration = 1 // seconds
@@ -59,6 +61,10 @@ let scoreMoveToMenuPos = SKAction.move(by: CGVector(dx: 0, dy: -scoreOffset), du
 let scoreMoveToGamePos = SKAction.move(by: CGVector(dx: 0, dy: scoreOffset), duration: TimeInterval(scoreScaleDuration))
 //let scoreColorToRed = SKAction.colorize(with: UIColor(red: CGFloat(1), green: CGFloat(0), blue: CGFloat(0), alpha: CGFloat(0)), colorBlendFactor: CGFloat(1), duration: TimeInterval(scoreScaleDuration))
 //    duration: scoreScaleDuration)
+
+let hidingAction = SKAction.scale(to: 0, duration: 1)
+let showingAction = SKAction.scale(to: 2, duration: 1)
+let showingActionHalf = SKAction.scale(to: 0.5, duration: 1)
 
 struct PhysicsCategory {
     static let None:   UInt32 = 0
@@ -203,6 +209,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         scoreDownscale.timingMode = .easeInEaseOut
         scoreMoveToMenuPos.timingMode = .easeInEaseOut
         scoreMoveToGamePos.timingMode = .easeInEaseOut
+        hidingAction.timingMode = .easeInEaseOut
+        showingAction.timingMode = .easeInEaseOut
+        showingActionHalf.timingMode = .easeInEaseOut
         
         // game setup
         gameNode = childNode(withName: "//game_node")
@@ -251,6 +260,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         buttonRestart = childNode(withName: "//button_restart") as? SKSpriteNode
         buttonAd = childNode(withName: "//button_ad") as? SKSpriteNode
         
+        buttonMenu.isHidden = false
         buttonMenu.position = CGPoint(x: self.frame.minX + buttonMenu.size.width / 2 + menuButtonOffset, // aligning bottom left
                                       y: -getVisibleScreen(
                                         sw: Float(self.scene!.frame.width),
@@ -258,6 +268,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
                                         viewWidth: Float(self.view!.frame.width),
                                         viewHeight: Float(self.view!.frame.height)).height / 2
                                         + buttonMenu.size.height/2 + menuButtonOffset)
+        buttonMenu.setScale(0)
         
         // ad setup
         adNode = childNode(withName: "ad_node")
@@ -697,16 +708,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         self.scoreLabel.run(scoreMoveToMenuPos)
         
         buttonAd.setScale(1)
-        buttonAd.run(pulse)
+        
+        
+        buttonRestart.setScale(0)
+        buttonAd.setScale(0)
+        buttonMenu.setScale(0)
         
         self.menuNode.isHidden = false
         let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
         print("Ad shown: ", self.adShown)
         if !isReady || self.adShown {
             self.buttonAd.isHidden = true
+            buttonRestart.position = CGPoint(x: 0, y: 0)
+            buttonRestart.run(showingAction)
+            buttonMenu.run(showingActionHalf)
             print("hidden")
         } else {
             self.buttonAd.isHidden = false
+            buttonRestart.position = CGPoint(x: 0, y: -600)
+            buttonAd.run(pulse)
+            buttonRestart.run(SKAction.sequence([waitAbit, showingAction]))
+            buttonMenu.run(SKAction.sequence([waitAbit, showingActionHalf]))
         }
         if (scoreValue > SceneManager.instance.score) {
             SceneManager.instance.score = scoreValue
@@ -716,13 +738,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     func hideMenu() {
         self.scoreLabel.run(scoreDownscale)
         self.scoreLabel.run(scoreMoveToGamePos)
+        buttonRestart.run(hidingAction)
         buttonAd.removeAllActions()
-        buttonAd.setScale(0)
-        self.menuNode.isHidden = true
+        buttonAd.run(hidingAction)
+        buttonMenu.run(hidingAction)
+//        self.menuNode.isHidden = true
     }
     
     // add
     func showAd() {
+        menuNode.isHidden = true
         adNode.isHidden = false
         let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
         guard let controller = self.view?.window?.rootViewController as? GameViewController else {return}
