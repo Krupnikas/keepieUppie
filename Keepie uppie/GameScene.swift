@@ -203,6 +203,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     let whistleSound = SKAction.group([
         SKAction.playSoundFileNamed("sounds/whistle", waitForCompletion: false),
         SKAction.changeVolume(to: 0.3, duration: 0.3)])
+    
+    let newRecordSound = SKAction.playSoundFileNamed("sounds/tada", waitForCompletion: false)
+    let winSound = SKAction.playSoundFileNamed("sounds/win", waitForCompletion: false)
+    let looseSound = SKAction.playSoundFileNamed("sounds/oh", waitForCompletion: false)
         
     // methods
     override func didMove(to view: SKView) {
@@ -667,8 +671,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         }
     
         scoreValue += 1
-        if (scoreValue > SceneManager.instance.score) {
+        if (scoreValue == SceneManager.instance.score + 1) {
             scoreLabel.run(coloriseScoreLabel)
+            self.run(newRecordSound)
             print("New record!")
 //            scoreLabel.fontColor = newRecordScoreLabelColor
         }
@@ -720,7 +725,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         scoreLabel.run(scoreUpscale)
         scoreLabel.run(scoreMoveToMenuPos)
+        
 //        scoreLabel.run(coloriseScoreLabel)
+        
+        if (scoreValue > SceneManager.instance.score)
+        {
+            self.run(winSound)
+        }
+        else
+        {
+            self.run(looseSound)
+        }
         
         buttonAd.setScale(1)
         
