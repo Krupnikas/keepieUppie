@@ -58,23 +58,33 @@ let upscale = SKAction.scale(to: CGFloat(pulseScaleDiff), duration: TimeInterval
 let downscale = SKAction.scale(to: 1, duration: TimeInterval(pulseScaleDuration))
 let pulse = SKAction.repeatForever(SKAction.sequence([upscale, downscale]))
 
-let waitAbit = SKAction.wait(forDuration: TimeInterval(2.5))  // seconds
-
 let scoreScaleFactor = 2
-let scoreScaleUpDuration = 3 // seconds
+let scoreScaleUpDurationWin = 5 // seconds
+let scoreScaleUpDuration = 1 // seconds
 let scoreScaleDownDuration = 1 // seconds
-let scoreOffset = 300
+let scoreOffset = 100
+let scoreOffsetWin = 370
+
+let delay = SKAction.wait(forDuration: TimeInterval(2.5))  // seconds
+let waitWin = SKAction.wait(forDuration: TimeInterval(scoreScaleUpDurationWin / 2))  // seconds
+let waitAbit = SKAction.wait(forDuration: TimeInterval(0.1))  // seconds
+
+let scoreUpscaleWin = SKAction.scale(by: CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleUpDurationWin))
+let scoreMoveToMenuPosWin = SKAction.move(by: CGVector(dx: 0, dy: -scoreOffsetWin), duration: TimeInterval(scoreScaleUpDurationWin))
+let fadeInWin = SKAction.fadeAlpha(to:1, duration: TimeInterval(scoreScaleUpDurationWin))
+
 let scoreUpscale = SKAction.scale(by: CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleUpDuration))
 let scoreDownscale = SKAction.scale(by: 1/CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleDownDuration))
 let scoreMoveToMenuPos = SKAction.move(by: CGVector(dx: 0, dy: -scoreOffset), duration: TimeInterval(scoreScaleUpDuration))
-let scoreMoveToGamePos = SKAction.move(by: CGVector(dx: 0, dy: scoreOffset), duration: TimeInterval(scoreScaleDownDuration))
+let scoreMoveToGamePos = SKAction.move(to: CGPoint(x: 0, y: 880), duration: TimeInterval(scoreScaleDownDuration))
 let coloriseScoreLabel = SKAction.colorize(with: newRecordScoreLabelColor, colorBlendFactor: CGFloat(1), duration: TimeInterval(0.1))
 let decoloriseScoreLabel = SKAction.colorize(with: defaultScoreLabelColor, colorBlendFactor: CGFloat(1), duration: TimeInterval(scoreScaleDownDuration))
 let fadeIn = SKAction.fadeAlpha(to:1, duration: TimeInterval(scoreScaleUpDuration))
 let fadeOut = SKAction.fadeAlpha(to:0, duration: TimeInterval(CGFloat(scoreScaleDownDuration)))
 
 let hidingAction = SKAction.scale(to: 0, duration: 1)
-let showingAction = SKAction.scale(to: 2, duration: 1)
+let showingAction2 = SKAction.scale(to: 2, duration: 1)
+let showingAction = SKAction.scale(to: 1, duration: 1)
 let showingActionHalf = SKAction.scale(to: 0.5, duration: 1)
 
 struct PhysicsCategory {
@@ -155,6 +165,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     private var player: SKSpriteNode!
     
+    private var recordNode: SKLabelNode!
+    
     private var floor: SKSpriteNode!
 
     private var background: SKSpriteNode!
@@ -225,12 +237,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         scoreMoveToMenuPos.timingMode = .easeInEaseOut
         scoreMoveToGamePos.timingMode = .easeInEaseOut
         hidingAction.timingMode = .easeInEaseOut
-        showingAction.timingMode = .easeInEaseOut
+        showingAction2.timingMode = .easeInEaseOut
         showingActionHalf.timingMode = .easeInEaseOut
         coloriseScoreLabel.timingMode = .easeInEaseOut
         decoloriseScoreLabel.timingMode = .easeInEaseOut
         fadeOut.timingMode = .easeInEaseOut
         fadeIn.timingMode = .easeInEaseOut
+        showingAction.timingMode = .easeInEaseOut
+        
+        scoreUpscaleWin.timingMode = .easeInEaseOut
+        scoreMoveToMenuPosWin.timingMode = .easeInEaseOut
+        fadeInWin.timingMode = .easeInEaseOut
         
         // game setup
         gameNode = childNode(withName: "//game_node")
@@ -278,6 +295,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         buttonMenu = childNode(withName: "//button_menu") as? SKSpriteNode
         buttonRestart = childNode(withName: "//button_restart") as? SKSpriteNode
         buttonAd = childNode(withName: "//button_ad") as? SKSpriteNode
+        recordNode = childNode(withName: "//record") as? SKLabelNode
+        recordNode.setScale(0)
         
         buttonMenu.isHidden = false
         buttonMenu.position = CGPoint(x: self.frame.minX + buttonMenu.size.width / 2 + menuButtonOffset, // aligning bottom left
@@ -730,23 +749,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     // menu
     func showMenu() {
         
-        scoreLabel.run(scoreUpscale)
-        scoreLabel.run(scoreMoveToMenuPos)
-        
-//        scoreLabel.run(coloriseScoreLabel)
+        var wait = waitAbit
         
         if (scoreValue > SceneManager.instance.score)
         {
+            wait = waitWin
             self.run(winSound)
-            scoreLabel.childNode(withName: "win_crown")?.run(fadeIn)
+            scoreLabel.run(scoreUpscaleWin)
+            scoreLabel.run(scoreMoveToMenuPosWin)
+            scoreLabel.childNode(withName: "win_crown")?.run(fadeInWin)
         }
         else
         {
+            scoreLabel.run(scoreUpscale)
+            scoreLabel.run(scoreMoveToMenuPos)
+            recordNode.text = String(SceneManager.instance.score)
+            recordNode.run(showingAction)
             self.run(looseSound)
         }
         
         buttonAd.setScale(1)
-        
         
         buttonRestart.setScale(0)
         buttonAd.setScale(0)
@@ -758,15 +780,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         if !isReady || self.adShown {
             self.buttonAd.isHidden = true
             buttonRestart.position = CGPoint(x: 0, y: 0)
-            buttonRestart.run(showingAction)
-            buttonMenu.run(showingActionHalf)
+            buttonRestart.run(SKAction.sequence([wait, showingAction2]))
+            buttonMenu.run(SKAction.sequence([wait, showingActionHalf]))
             print("hidden")
         } else {
             self.buttonAd.isHidden = false
             buttonRestart.position = CGPoint(x: 0, y: -600)
-            buttonAd.run(pulse)
-            buttonRestart.run(SKAction.sequence([waitAbit, showingAction]))
-            buttonMenu.run(SKAction.sequence([waitAbit, showingActionHalf]))
+            buttonAd.run(SKAction.sequence([wait, pulse]))
+            buttonRestart.run(SKAction.sequence([wait, delay, showingAction2]))
+            buttonMenu.run(SKAction.sequence([wait, delay, showingActionHalf]))
         }
         if (scoreValue > SceneManager.instance.score) {
             SceneManager.instance.score = scoreValue
@@ -781,6 +803,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             scoreLabel.run(decoloriseScoreLabel)
         }
 //        scoreLabel.fontColor = defaultScoreLabelColor
+        recordNode.run(hidingAction)
         buttonRestart.run(hidingAction)
         buttonAd.removeAllActions()
         buttonAd.run(hidingAction)
