@@ -44,10 +44,11 @@ let KneeAngleDelta = CGFloat(0.0) // π / 30
 let menuButtonOffset = CGFloat(30)
 
 //colors
+let scoreLableGolwColor = SKColor(red: 255, green: 223, blue: 0, alpha: 255)
 let defaultScoreLabelColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-let newRecordScoreLabelColor = UIColor(red: CGFloat(236)/255,
-                                       green: CGFloat(78)/255,
-                                       blue: CGFloat(39)/255,
+let newRecordScoreLabelColor = UIColor(red: CGFloat(255)/255,
+                                       green: CGFloat(86)/255,
+                                       blue: CGFloat(0)/255,
                                        alpha: CGFloat(1))
 
 //animations
@@ -59,15 +60,18 @@ let pulse = SKAction.repeatForever(SKAction.sequence([upscale, downscale]))
 
 let waitAbit = SKAction.wait(forDuration: TimeInterval(2.5))  // seconds
 
-let scoreScaleFactor = 3
-let scoreScaleDuration = 1 // seconds
-let scoreOffset = 400
-let scoreUpscale = SKAction.scale(by: CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleDuration))
-let scoreDownscale = SKAction.scale(by: 1/CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleDuration))
-let scoreMoveToMenuPos = SKAction.move(by: CGVector(dx: 0, dy: -scoreOffset), duration: TimeInterval(scoreScaleDuration))
-let scoreMoveToGamePos = SKAction.move(by: CGVector(dx: 0, dy: scoreOffset), duration: TimeInterval(scoreScaleDuration))
+let scoreScaleFactor = 2
+let scoreScaleUpDuration = 3 // seconds
+let scoreScaleDownDuration = 1 // seconds
+let scoreOffset = 300
+let scoreUpscale = SKAction.scale(by: CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleUpDuration))
+let scoreDownscale = SKAction.scale(by: 1/CGFloat(scoreScaleFactor), duration: TimeInterval(scoreScaleDownDuration))
+let scoreMoveToMenuPos = SKAction.move(by: CGVector(dx: 0, dy: -scoreOffset), duration: TimeInterval(scoreScaleUpDuration))
+let scoreMoveToGamePos = SKAction.move(by: CGVector(dx: 0, dy: scoreOffset), duration: TimeInterval(scoreScaleDownDuration))
 let coloriseScoreLabel = SKAction.colorize(with: newRecordScoreLabelColor, colorBlendFactor: CGFloat(1), duration: TimeInterval(0.1))
-let decoloriseScoreLabel = SKAction.colorize(with: defaultScoreLabelColor, colorBlendFactor: CGFloat(1), duration: TimeInterval(scoreScaleDuration))
+let decoloriseScoreLabel = SKAction.colorize(with: defaultScoreLabelColor, colorBlendFactor: CGFloat(1), duration: TimeInterval(scoreScaleDownDuration))
+let fadeIn = SKAction.fadeAlpha(to:1, duration: TimeInterval(scoreScaleUpDuration))
+let fadeOut = SKAction.fadeAlpha(to:0, duration: TimeInterval(CGFloat(scoreScaleDownDuration)))
 
 let hidingAction = SKAction.scale(to: 0, duration: 1)
 let showingAction = SKAction.scale(to: 2, duration: 1)
@@ -225,6 +229,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         showingActionHalf.timingMode = .easeInEaseOut
         coloriseScoreLabel.timingMode = .easeInEaseOut
         decoloriseScoreLabel.timingMode = .easeInEaseOut
+        fadeOut.timingMode = .easeInEaseOut
+        fadeIn.timingMode = .easeInEaseOut
         
         // game setup
         gameNode = childNode(withName: "//game_node")
@@ -672,6 +678,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
         scoreValue += 1
         if (scoreValue == SceneManager.instance.score + 1) {
+            
             scoreLabel.run(coloriseScoreLabel)
             self.run(newRecordSound)
             print("New record!")
@@ -731,6 +738,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         if (scoreValue > SceneManager.instance.score)
         {
             self.run(winSound)
+            scoreLabel.childNode(withName: "win_crown")?.run(fadeIn)
         }
         else
         {
@@ -766,6 +774,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     }
     
     func hideMenu() {
+        scoreLabel.childNode(withName: "win_crown")?.run(fadeOut)
         scoreLabel.run(scoreDownscale)
         scoreLabel.run(scoreMoveToGamePos)
         if (scoreValue == 0) {
