@@ -58,14 +58,14 @@ let upscale = SKAction.scale(to: CGFloat(pulseScaleDiff), duration: TimeInterval
 let downscale = SKAction.scale(to: 1, duration: TimeInterval(pulseScaleDuration))
 let pulse = SKAction.repeatForever(SKAction.sequence([upscale, downscale]))
 
-let scoreScaleFactor = 2
+let scoreScaleFactor = 1.6
 let scoreScaleUpDurationWin = 5 // seconds
 let scoreScaleUpDuration = 1 // seconds
 let scoreScaleDownDuration = 1 // seconds
 let scoreOffset = 100
 let scoreOffsetWin = 370
 
-let delay = SKAction.wait(forDuration: TimeInterval(2.5))  // seconds
+let adDelay = SKAction.wait(forDuration: TimeInterval(1.5))  // seconds
 let waitWin = SKAction.wait(forDuration: TimeInterval(scoreScaleUpDurationWin / 2))  // seconds
 let waitAbit = SKAction.wait(forDuration: TimeInterval(0.1))  // seconds
 
@@ -787,8 +787,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             self.buttonAd.isHidden = false
             buttonRestart.position = CGPoint(x: 0, y: -600)
             buttonAd.run(SKAction.sequence([wait, pulse]))
-            buttonRestart.run(SKAction.sequence([wait, delay, showingAction2]))
-            buttonMenu.run(SKAction.sequence([wait, delay, showingActionHalf]))
+            buttonRestart.run(SKAction.sequence([wait, adDelay, showingAction2]))
+            buttonMenu.run(SKAction.sequence([wait, adDelay, showingActionHalf]))
         }
         if (scoreValue > SceneManager.instance.score) {
             SceneManager.instance.score = scoreValue
