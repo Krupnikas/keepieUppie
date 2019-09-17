@@ -24,13 +24,14 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
         
         rewardBasedVideo = GADRewardBasedVideoAd.sharedInstance()
         rewardBasedVideo?.delegate = self
-        #if DEBUG
+//        #if DEBUG
+//        let request = GADRequest()
+//        request.testDevices = [ "fc7552e962ddcbe16ff92cfaadfb1fa5" ] // Sample device ID
+//        rewardBasedVideo.load(request, withAdUnitID: testAdUnitId)
+//        #else
         let request = GADRequest()
-        request.testDevices = [ "fc7552e962ddcbe16ff92cfaadfb1fa5" ] // Sample device ID
-        rewardBasedVideo.load(request, withAdUnitID: testAdUnitId)
-        #else
         rewardBasedVideo.load(request, withAdUnitID: prodAdUnitId)
-        #endif
+//        #endif
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
