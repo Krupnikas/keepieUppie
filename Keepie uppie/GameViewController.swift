@@ -11,12 +11,13 @@ import SpriteKit
 import GameplayKit
 import GoogleMobileAds
 
-let testAdUnitId = "ca-app-pub-3940256099942544/1712485313"
 let prodAdUnitId = "ca-app-pub-4718486799866350/3586090329"
+let interstAdUnitId = "ca-app-pub-4718486799866350/1288932724"
 
-class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
+class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADInterstitialDelegate {
 
     private var rewardBasedVideo: GADRewardBasedVideoAd!
+    private var interstitial: GADInterstitial!
     
     override func viewDidLoad() {
         
@@ -24,14 +25,11 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
         
         rewardBasedVideo = GADRewardBasedVideoAd.sharedInstance()
         rewardBasedVideo?.delegate = self
-//        #if DEBUG
-//        let request = GADRequest()
-//        request.testDevices = [ "fc7552e962ddcbe16ff92cfaadfb1fa5" ] // Sample device ID
-//        rewardBasedVideo.load(request, withAdUnitID: testAdUnitId)
-//        #else
+
         let request = GADRequest()
         rewardBasedVideo.load(request, withAdUnitID: prodAdUnitId)
-//        #endif
+        
+        interstitial = createAndLoadInterstitial()
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -69,6 +67,31 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
         return true
     }
     
+    // interstitial methods
+    func createAndLoadInterstitial() -> GADInterstitial {
+        let interstitial = GADInterstitial(adUnitID: interstAdUnitId)
+        interstitial.delegate = self
+        interstitial.load(GADRequest())
+        return interstitial
+    }
+    
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        interstitial = createAndLoadInterstitial()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.showAd), name: NSNotification.Name(rawValue: "showAd"), object: nil)
+    }
+    
+    @objc func showAd() {
+        if interstitial.isReady {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Ad wasn't ready")
+        }
+        
+    }
+    
     // reward video methods
     func rewardBasedVideoAd(_ rewardBasedVideoAd: GADRewardBasedVideoAd,
                             didRewardUserWith reward: GADAdReward) {
@@ -99,13 +122,7 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate {
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
         print("Reward based video ad is closed.")
         SceneManager.instance.notifyAdClosed()
-        #if DEBUG
-        let request = GADRequest()
-        request.testDevices = [ "fc7552e962ddcbe16ff92cfaadfb1fa5" ] // Sample device ID
-        rewardBasedVideo.load(request, withAdUnitID: testAdUnitId)
-        #else
         rewardBasedVideo.load(GADRequest(), withAdUnitID: prodAdUnitId)
-        #endif
     }
     
     func rewardBasedVideoAdWillLeaveApplication(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {

@@ -815,12 +815,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     func showAd() {
         menuNode.isHidden = true
         adNode.isHidden = false
-        let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
+        
+//        let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
+        let isReady = true
+        
         guard let controller = self.view?.window?.rootViewController as? GameViewController else {return}
         
         if isReady {
             print("going to show ad")
-            GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: controller)
+            
+//            GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: controller)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
+
+            
             print("ad shown")
             self.adShown = true
         } else {
