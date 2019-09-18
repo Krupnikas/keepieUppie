@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		084AF9A0A65E92C4E052740B /* Pods_Keepie_uppieUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A248B84E97AF3E89EE3F33F /* Pods_Keepie_uppieUITests.framework */; };
 		A50496A3222C0DE100157780 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = A50496A2222C0DE100157780 /* sounds */; };
 		A5386EE32136A35200C86A1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE22136A35200C86A1D /* AppDelegate.swift */; };
 		A5386EE92136A35200C86A1D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EE82136A35200C86A1D /* GameScene.swift */; };
@@ -17,6 +18,7 @@
 		A5386EFE2136A35300C86A1D /* Keepie_uppieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386EFD2136A35300C86A1D /* Keepie_uppieTests.swift */; };
 		A5386F092136A35300C86A1D /* Keepie_uppieUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */; };
 		A5C01DB0218095D10006A347 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C01DAF218095D10006A347 /* GoogleMobileAds.framework */; };
+		C2C18168F922BB98A3553543 /* Pods_Keepie_uppieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2634723D699DEC02D531B4 /* Pods_Keepie_uppieTests.framework */; };
 		D4165009217F2AFD00F93ED6 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165004217F2AFD00F93ED6 /* MainMenuScene.swift */; };
 		D416500A217F2AFD00F93ED6 /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165005217F2AFD00F93ED6 /* SceneManager.swift */; };
 		D416500B217F2AFD00F93ED6 /* WorkshopScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4165006217F2AFD00F93ED6 /* WorkshopScene.swift */; };
@@ -55,6 +57,7 @@
 		D4F47C84223AE6E600247054 /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = D4F47C66223AE6E300247054 /* Icon-114.png */; };
 		D4F47C85223AE6E600247054 /* Icon-32.png in Resources */ = {isa = PBXBuildFile; fileRef = D4F47C67223AE6E300247054 /* Icon-32.png */; };
 		D4F47C86223AE6E600247054 /* Icon-512.png in Resources */ = {isa = PBXBuildFile; fileRef = D4F47C68223AE6E300247054 /* Icon-512.png */; };
+		F169AC9314A3E27D941050C4 /* Pods_Keepie_uppie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B4BE7AD4A15AA5F8D2333B /* Pods_Keepie_uppie.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +82,8 @@
 		0A0698F74201E68FEBFEA31F /* Pods-Keepie uppieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keepie uppieUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Keepie uppieUITests/Pods-Keepie uppieUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2342E1A294B727959435C300 /* Pods-Keepie uppie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keepie uppie.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keepie uppie/Pods-Keepie uppie.release.xcconfig"; sourceTree = "<group>"; };
 		4132E600468E2776E03F202A /* Pods-Keepie uppieUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keepie uppieUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keepie uppieUITests/Pods-Keepie uppieUITests.release.xcconfig"; sourceTree = "<group>"; };
+		5A248B84E97AF3E89EE3F33F /* Pods_Keepie_uppieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Keepie_uppieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		68B4BE7AD4A15AA5F8D2333B /* Pods_Keepie_uppie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Keepie_uppie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A50496A2222C0DE100157780 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		A5386EDF2136A35200C86A1D /* Keepie uppie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Keepie uppie.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5386EE22136A35200C86A1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +100,7 @@
 		A5386F082136A35300C86A1D /* Keepie_uppieUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keepie_uppieUITests.swift; sourceTree = "<group>"; };
 		A5386F0A2136A35300C86A1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5C01DAF218095D10006A347 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = "../GoogleMobileAdsSdkiOS-7.35.1/GoogleMobileAds.framework"; sourceTree = "<group>"; };
+		AE2634723D699DEC02D531B4 /* Pods_Keepie_uppieTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Keepie_uppieTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B20691BB528328F4948B4D69 /* Pods-Keepie uppie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keepie uppie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Keepie uppie/Pods-Keepie uppie.debug.xcconfig"; sourceTree = "<group>"; };
 		D4165004217F2AFD00F93ED6 /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 		D4165005217F2AFD00F93ED6 /* SceneManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
@@ -143,6 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5C01DB0218095D10006A347 /* GoogleMobileAds.framework in Frameworks */,
+				F169AC9314A3E27D941050C4 /* Pods_Keepie_uppie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2C18168F922BB98A3553543 /* Pods_Keepie_uppieTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				084AF9A0A65E92C4E052740B /* Pods_Keepie_uppieUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +188,9 @@
 		6B656DAE93F71D93BDC961DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE2634723D699DEC02D531B4 /* Pods_Keepie_uppieTests.framework */,
+				5A248B84E97AF3E89EE3F33F /* Pods_Keepie_uppieUITests.framework */,
+				68B4BE7AD4A15AA5F8D2333B /* Pods_Keepie_uppie.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -312,6 +324,7 @@
 				A5386EDB2136A35200C86A1D /* Sources */,
 				A5386EDC2136A35200C86A1D /* Frameworks */,
 				A5386EDD2136A35200C86A1D /* Resources */,
+				7A0D23ED74EF895156A18C92 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -516,6 +529,30 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A0D23ED74EF895156A18C92 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Keepie uppie/Pods-Keepie uppie-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Keepie uppie/Pods-Keepie uppie-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
