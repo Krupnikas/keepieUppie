@@ -279,7 +279,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         targetPos = self.defautTargetPos
         
         minContactDistance = ballRadius * MinContactMaxDistanceCoeff
-//        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+//        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame) // DEBUG
 //        self.view?.showsPhysics = true
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
@@ -322,7 +322,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     func createHead() {
         head = childNode(withName: "//head") as? SKSpriteNode
-        head.physicsBody = SKPhysicsBody(texture: head.texture!, size: head.size)
+//        head.physicsBody = SKPhysicsBody(texture: head.texture!, size: head.size)
         head.physicsBody?.affectedByGravity = false
         head.physicsBody?.isDynamic = true
         head.physicsBody?.allowsRotation = true
@@ -335,6 +335,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
                                           bodyB: head.physicsBody!,
                                           anchor: CGPoint(x: -370, y: 837))
         self.physicsWorld.add(neck)
+        print(head.physicsBody!.affectedByGravity)
         
         eye = childNode(withName: "//eye") as? SKSpriteNode
     }
@@ -342,7 +343,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     func createLeg() {
         
         hip = childNode(withName: "//hip") as? SKSpriteNode
-        hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
+//        hip.physicsBody = SKPhysicsBody(texture: hip.texture!, size: hip.size)
         hip.physicsBody?.affectedByGravity = false
         hip.physicsBody?.linearDamping = 1
         hip.physicsBody?.categoryBitMask = PhysicsCategory.Hip
@@ -353,7 +354,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         //        hip.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: 0, upperLimit: π / 2)))
         
         shin = childNode(withName: "//shin") as? SKSpriteNode
-        shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
+//        shin.physicsBody = SKPhysicsBody(texture: shin.texture!, size: shin.size)
         shin.physicsBody?.affectedByGravity = false
         shin.physicsBody?.linearDamping = 1
         shin.physicsBody?.categoryBitMask = PhysicsCategory.Shin
@@ -362,7 +363,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         //        shin.constraints?.append(SKConstraint.zRotation(SKRange(lowerLimit: -0.2, upperLimit: 2 * π / 3)))
         
         foot = childNode(withName: "//foot") as? SKSpriteNode
-        foot.physicsBody = SKPhysicsBody(texture: foot.texture!, size: foot.size)
+//        foot.physicsBody = SKPhysicsBody(texture: foot.texture!, size: foot.size)
         foot.physicsBody?.affectedByGravity = false
         foot.physicsBody?.allowsRotation = false
         foot.physicsBody?.linearDamping = 2
@@ -380,13 +381,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         let knee = SKPhysicsJointPin.joint(withBodyA: hip.physicsBody!,
                                            bodyB:  shin.physicsBody!,
-                                           anchor: CGPoint(x: -435, y: -440))
+                                           anchor: CGPoint(x: -440, y: -425))
         
         self.physicsWorld.add(knee)
         
         let ankle = SKPhysicsJointPin.joint(withBodyA: shin.physicsBody!,
                                             bodyB: foot.physicsBody!,
-                                            anchor: CGPoint(x: -429, y:-822))
+                                            anchor: CGPoint(x: -425, y:-810))
         self.physicsWorld.add(ankle)
         
         // Measured. Depend on default pos. DON'T MOVE THE BALL!! Or change this values
@@ -552,7 +553,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
 //        print("Shin:", shin.position, shin.zRotation)
 //        print("Foot:", foot.position, foot.zRotation)
 //        print(head.position)
-        
+    
         // Called before each frame is rendered
         let footPosX = foot.position.x
         let sizeWidth = self.size.width
@@ -596,40 +597,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             shin.physicsBody?.applyAngularImpulse(20 * (diff - minDiff))
 //            hip.physicsBody?.applyAngularImpulse(-30 * (diff - maxDiff))
         }
-        
+
         if diff < 0 {
             shin.physicsBody?.angularVelocity = 60 * (diff)
         }
-        
+
         let ballPos = ball.position
         let headPos = head.positionInScene
         let eyePos = eye.positionInScene
-        
+
         let hzr = atan2(ballPos.y - (headPos?.y)!, ballPos.x - (headPos?.x)!) * 0.5 - 0.1
-        
+
         var targerHeadAngle = hzr
-        
+
         if hzr > MaxHeadAngle {
             targerHeadAngle = MaxHeadAngle
         } else if hzr < MinHeadAngle {
             targerHeadAngle = MinHeadAngle
         }
-        
+
         if (ball.position.x < self.frame.minX ||  // Possible wrong state fix
             ball.position.x - ballRadius > self.frame.maxX) && buttonRestart.isHidden {
             loose();
         }
-        
+
         if self.status != SceneStatusGame {
             targerHeadAngle = DefaultHeadAngle
             head.physicsBody?.angularVelocity = 1 * (targerHeadAngle - head.zRotation)
             return
         }
-        
+
         if head.zRotation != targerHeadAngle {
             head.physicsBody?.angularVelocity = 10 * (targerHeadAngle - head.zRotation)
         }
-        
+
         let ezr = atan2(ballPos.y - (eyePos?.y)!, ballPos.x - (eyePos?.x)!) - head.zRotation
         if ezr > MaxEyeAngle {
             eye.zRotation = MaxEyeAngle
@@ -649,7 +650,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             lastContactMaxDistance = distance
         }
     }
-    
+
     func loose() {
         print("Looser!")
         self.setStatus(statusNew: SceneStatusMenu)

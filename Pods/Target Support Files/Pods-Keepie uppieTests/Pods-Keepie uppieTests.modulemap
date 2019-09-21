@@ -1,6 +1,0 @@
-framework module Pods_Keepie_uppieTests {
-  umbrella header "Pods-Keepie uppieTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
