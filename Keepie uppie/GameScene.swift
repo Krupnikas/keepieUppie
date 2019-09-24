@@ -14,7 +14,9 @@ let MinTimeContactInterval = 0.1
 let MinContactMaxDistanceCoeff = CGFloat(4)
 let TouchNoEffectSizeCoeff = CGFloat(0.8)
 
-let LooseCountShowAd = 7
+let LooseCountShowAd = 4
+
+let LooseDisappointmentSoundRate = 0.7
 
 let SceneStatusGame = 0
 let SceneStatusMenu = 1
@@ -148,7 +150,7 @@ func getVisibleScreen(sw: Float, sh: Float, viewWidth: Float, viewHeight: Float)
     return visibleScreenOffset
 }
 
-class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
+class GameScene: SKScene, SKPhysicsContactDelegate, RewardedAdScene, InterstitialAdScene {
     
     // game nodes
     private var gameNode: SKNode!
@@ -163,6 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     private var ball: SKSpriteNode!
     private var ballOriginPosition: CGPoint!
     private var ballRadius: CGFloat!
+    private var ballVelocity: CGVector!
     private var minContactDistance: CGFloat!
     
     private var player: SKSpriteNode!
@@ -431,6 +434,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         self.run(whistleSound)
         
+        ball.physicsBody?.isDynamic = true
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 1000)
         ball.physicsBody?.angularVelocity = 0
         ball.position = ballOriginPosition
@@ -764,7 +768,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         
         var wait = waitAbit
         
-        if (scoreValue > SceneManager.instance.score)
+        let bestScore = SceneManager.instance.score
+        if (scoreValue > bestScore)
         {
             wait = waitWin
             self.run(winSound)
@@ -778,7 +783,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             scoreLabel.run(scoreMoveToMenuPos)
             recordNode.text = String(SceneManager.instance.score)
             recordNode.run(showingAction)
-            self.run(looseSound)
+            
+            if (Double(scoreValue) > LooseDisappointmentSoundRate * Double(bestScore)) {
+                self.run(looseSound)
+            }
         }
         
         buttonAd.setScale(1)
@@ -803,7 +811,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             buttonRestart.run(SKAction.sequence([wait, adDelay, showingAction2]))
             buttonMenu.run(SKAction.sequence([wait, adDelay, showingActionHalf]))
         }
-        if (scoreValue > SceneManager.instance.score) {
+        if (scoreValue > bestScore) {
             SceneManager.instance.score = scoreValue
         }
     }
@@ -857,16 +865,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
 
 
     // ad scene methods
-    func adStarted() {
+    func rewardedAdStarted() {
+        print("rewardedAdStarted")
+        hideBall()
         watchedEnough = false
     }
     
-    func adWatchedEnough() {
+    func rewardedAdWatchedEnough() {
         watchedEnough = true
         adShown = true
+        looseCount = 0
     }
     
-    func adClosed() {
+    func rewardedAdClosed() {
         if watchedEnough {
             setStatus(statusNew: SceneStatusContinue)
         } else {
@@ -877,8 +888,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
         }
     }
     
+    func interstitialAdWillPresent() {
+        hideBall()
+    }
+    
+    func interstitialAdWillDismissScreen() {
+    }
+    
     func interstitialAdWatched() {
         looseCount = 0
         print("Ad watched, loose count: ", looseCount)
     }
+    
+    func hideBall() {
+        print("minY:", self.frame.minY)
+        ball.position = CGPoint(x: 0, y: 2 * self.frame.minY)
+    }
+
 }

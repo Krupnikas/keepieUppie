@@ -21,12 +21,16 @@ struct SceneType {
     static let Game = 2
 }
 
-protocol AdScene {
-    func adStarted()
-    func adWatchedEnough()
-    func adClosed()
-    
+protocol RewardedAdScene {
+    func rewardedAdStarted()
+    func rewardedAdWatchedEnough()
+    func rewardedAdClosed()
+}
+
+protocol InterstitialAdScene {
     func interstitialAdWatched()
+    func interstitialAdWillPresent()
+    func interstitialAdWillDismissScreen()
 }
 
 class SceneManager {
@@ -43,7 +47,8 @@ class SceneManager {
     //    var mainMenu: MainMenuScene
     //    var game: GameScene
     //    var workshop: WorkshopScene
-    var adScenes = [AdScene]()
+    var rewardedAdScenes = [RewardedAdScene]()
+    var interstitialAdScenes = [InterstitialAdScene]()
     
     var score: Int {
         didSet {
@@ -75,7 +80,9 @@ class SceneManager {
     }
     
     func presentMainMenuScene() {
-        adScenes.removeAll()
+        rewardedAdScenes.removeAll()
+        interstitialAdScenes.removeAll()
+        
         let mainMenu = MainMenuScene(fileNamed: "MainMenuScene.sks")!
         mainMenu.scaleMode = .aspectFill
         SceneManager.setup.view.presentScene(mainMenu)
@@ -84,38 +91,55 @@ class SceneManager {
     func presentGameScene() {
         let game = GameScene(fileNamed: "GameScene.sks")!
         game.scaleMode = .aspectFill
-        adScenes.append(game)
+        
+        rewardedAdScenes.append(game)
+        interstitialAdScenes.append(game)
+        
         SceneManager.setup.view.presentScene(game)
     }
     
     func presentWorkshopScene() {
-        adScenes.removeAll()
+        rewardedAdScenes.removeAll()
+        interstitialAdScenes.removeAll()
+        
         let workshop = WorkshopScene(size: GameSize)
         workshop.scaleMode = .aspectFill
         SceneManager.setup.view.presentScene(workshop)
     }
     
-    func notifyAdStarted() {
-        for adScene in adScenes {
-            adScene.adStarted()
+    func notifyRewardedAdStarted() {
+        for adScene in rewardedAdScenes {
+            adScene.rewardedAdStarted()
         }
     }
     
-    func notifyAdWatchedEnough() {
-        for adScene in adScenes {
-            adScene.adWatchedEnough()
+    func notifyRewardedAdWatchedEnough() {
+        for adScene in rewardedAdScenes {
+            adScene.rewardedAdWatchedEnough()
         }
     }
     
-    func notifyAdClosed() {
-        for adScene in adScenes {
-            adScene.adClosed()
+    func notifyRewardedAdClosed() {
+        for adScene in rewardedAdScenes {
+            adScene.rewardedAdClosed()
         }
     }
     
     func notifyInterstitialAdWatched() {
-        for adScene in adScenes {
+        for adScene in interstitialAdScenes {
             adScene.interstitialAdWatched()
+        }
+    }
+    
+    func notifyInterstitialAdWillPresent() {
+        for adScene in interstitialAdScenes {
+            adScene.interstitialAdWillPresent()
+        }
+    }
+    
+    func notifyInterstitialAdWillDismissScreen() {
+        for adScene in interstitialAdScenes {
+            adScene.interstitialAdWillDismissScreen()
         }
     }
 }

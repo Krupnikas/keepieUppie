@@ -76,6 +76,14 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADIn
         return interstitial
     }
     
+    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+        SceneManager.instance.notifyInterstitialAdWillPresent()
+    }
+    
+    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        SceneManager.instance.notifyInterstitialAdWillDismissScreen()
+    }
+    
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
         interstitial = createAndLoadInterstitial()
         SceneManager.instance.notifyInterstitialAdWatched()
@@ -99,7 +107,7 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADIn
                             didRewardUserWith reward: GADAdReward) {
         print("Reward received with currency: \(reward.type), amount \(reward.amount).")
         
-        SceneManager.instance.notifyAdWatchedEnough()
+        SceneManager.instance.notifyRewardedAdWatchedEnough()
     }
     
     func rewardBasedVideoAdDidReceive(_ rewardBasedVideoAd:GADRewardBasedVideoAd) {
@@ -109,7 +117,7 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADIn
     
     func rewardBasedVideoAdDidOpen(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
         print("Opened reward based video ad.")
-        SceneManager.instance.notifyAdStarted()
+        SceneManager.instance.notifyRewardedAdStarted()
     }
     
     func rewardBasedVideoAdDidStartPlaying(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
@@ -123,7 +131,7 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADIn
     
     func rewardBasedVideoAdDidClose(_ rewardBasedVideoAd: GADRewardBasedVideoAd) {
         print("Reward based video ad is closed.")
-        SceneManager.instance.notifyAdClosed()
+        SceneManager.instance.notifyRewardedAdClosed()
         rewardBasedVideo.load(GADRequest(), withAdUnitID: prodAdUnitId)
     }
     
