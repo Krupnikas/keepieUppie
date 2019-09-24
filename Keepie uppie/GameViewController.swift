@@ -11,7 +11,8 @@ import SpriteKit
 import GameplayKit
 import GoogleMobileAds
 
-let prodAdUnitId = "ca-app-pub-4718486799866350/3586090329"
+//let prodAdUnitId = "ca-app-pub-4718486799866350/3586090329"
+let prodAdUnitId = "ca-app-pub-3940256099942544/4411468910"  // TEST
 let interstAdUnitId = "ca-app-pub-4718486799866350/1288932724"
 
 class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADInterstitialDelegate {
@@ -77,6 +78,7 @@ class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADIn
     
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
         interstitial = createAndLoadInterstitial()
+        SceneManager.instance.notifyInterstitialAdWatched()
     }
     
     override func viewWillLayoutSubviews() {

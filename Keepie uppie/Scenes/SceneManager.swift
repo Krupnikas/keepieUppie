@@ -25,6 +25,8 @@ protocol AdScene {
     func adStarted()
     func adWatchedEnough()
     func adClosed()
+    
+    func interstitialAdWatched()
 }
 
 class SceneManager {
@@ -111,6 +113,10 @@ class SceneManager {
         }
     }
     
-
+    func notifyInterstitialAdWatched() {
+        for adScene in adScenes {
+            adScene.interstitialAdWatched()
+        }
+    }
 }
  

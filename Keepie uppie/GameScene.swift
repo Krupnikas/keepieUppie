@@ -14,6 +14,8 @@ let MinTimeContactInterval = 0.1
 let MinContactMaxDistanceCoeff = CGFloat(4)
 let TouchNoEffectSizeCoeff = CGFloat(0.8)
 
+let LooseCountShowAd = 7
+
 let SceneStatusGame = 0
 let SceneStatusMenu = 1
 let SceneStatusAd = 2
@@ -182,6 +184,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     // ad nodes
     private var adNode: SKNode!
     private var watchedEnough = false
+    private var looseCount = 0
     
     // continue nodes
     private var continueNode: SKNode!
@@ -652,6 +655,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     
     func loose() {
         print("Looser!")
+        
+        // interstitial ad check
+        looseCount += 1
+        print("Loose count: ", looseCount)
+        if looseCount >= LooseCountShowAd {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
+            looseCount = 0
+        }
+        
         self.setStatus(statusNew: SceneStatusMenu)
         
         let zero = CGVector(dx: 0, dy: 0)
@@ -815,19 +827,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
     func showAd() {
         menuNode.isHidden = true
         adNode.isHidden = false
-        
-//        let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
-        let isReady = true
-        
+        let isReady = GADRewardBasedVideoAd.sharedInstance().isReady
         guard let controller = self.view?.window?.rootViewController as? GameViewController else {return}
-        
+    
         if isReady {
             print("going to show ad")
-            
-//            GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: controller)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
-
-            
+            GADRewardBasedVideoAd.sharedInstance().present(fromRootViewController: controller)
             print("ad shown")
             self.adShown = true
         } else {
@@ -869,5 +874,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AdScene {
             setStatus(statusNew: SceneStatusGame)
             adShown = true
         }
+    }
+    
+    func interstitialAdWatched() {
+        looseCount = 0
+        print("Ad watched, loose count: ", looseCount)
     }
 }
