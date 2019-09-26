@@ -16,7 +16,7 @@ let TouchNoEffectSizeCoeff = CGFloat(0.8)
 
 let LooseCountShowAd = 4
 
-let LooseDisappointmentSoundRate = 0.7
+let LooseDisappointmentSoundRate = 0.0
 
 let SceneStatusGame = 0
 let SceneStatusMenu = 1
@@ -784,7 +784,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, RewardedAdScene, Interstitia
             recordNode.text = String(SceneManager.instance.score)
             recordNode.run(showingAction)
             
-            if (Double(scoreValue) > LooseDisappointmentSoundRate * Double(bestScore)) {
+            if (Double(scoreValue) >= LooseDisappointmentSoundRate * Double(bestScore)) {
                 self.run(looseSound)
             }
         }

@@ -11,8 +11,7 @@ import SpriteKit
 import GameplayKit
 import GoogleMobileAds
 
-//let prodAdUnitId = "ca-app-pub-4718486799866350/3586090329"
-let prodAdUnitId = "ca-app-pub-3940256099942544/4411468910"  // TEST
+let prodAdUnitId = "ca-app-pub-4718486799866350/3586090329"
 let interstAdUnitId = "ca-app-pub-4718486799866350/1288932724"
 
 class GameViewController: UIViewController, GADRewardBasedVideoAdDelegate, GADInterstitialDelegate {
