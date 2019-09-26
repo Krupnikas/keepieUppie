@@ -736,7 +736,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "sergey.Keepie-uppie";
+				PRODUCT_BUNDLE_IDENTIFIER = "deserg.Keepie-uppie";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -756,7 +756,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "sergey.Keepie-uppie";
+				PRODUCT_BUNDLE_IDENTIFIER = "deserg.Keepie-uppie";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
