@@ -1,4 +1,20 @@
-# keepieUppie
-Impressive arcade game, great timekiller. A competitive simulator of chasing the ball will help you to spend the time in a queue or transport. Ball games are popular all over the world, and chasing the ball is familiar to almost every child!
+# keepieUppie - Чеканка мяча
 
-Control your foot to get as much points as possible and break the record! Only honest chasing from the feet, knees and heads is considered. Check your reaction and become the best player!
+<p align="center">
+  <img width=300 src="https://github.com/Krupnikas/keepieUppie/raw/master/github_preview.gif" alt="Gameplay"/>
+</p>
+
+KeepieUppie - игра на iOS, которую сделали я и [Сергей Попов](https://github.com/deserg) в период с октября 2018 по март 2019. 
+Этот проект - эксперимент и наше знакомство с разработкой на Swift. Кроме того, это первое наше приложение, которое мы довели до публикации в AppStore.
+
+О процессе разработки и результатах я написал на vc.ru:
+
+[Как два студента сделали игру для iOS и заработали на этом](https://vc.ru/tribuna/81857-kak-dva-studenta-sdelali-igru-dlya-ios-i-zarabotali-na-etom)
+
+## Текущий статус
+
+До октября 2019 оно было доступно по [ссылке](https://apps.apple.com/ru/app/keepie-uppie-чеканка-мяча/id1456294843). К сожалению, сейчас срок действия аккаунта истёк, поэтому скачать из магазина игру нельзя. Но в неё все еще можно поиграть, собрав из исходников, которые доступны в этом репозитории.
+
+Более того, если вы готовы развивать проект, можете использовать ниши наработки и дизайн. В таком случае, пожалуйста указывайте наше авторство, а при желании можете отблагодарить нас материально по кнопке ниже)
+
+[<img width="200" src="https://github.com/Krupnikas/yashhik/raw/master/donate.png"/>](https://money.yandex.ru/to/41001793099478/150)
